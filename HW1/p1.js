@@ -66,11 +66,11 @@ copyApaste.addEventListener('click', function () {
     }
     if (txt == "" || txt == undefined) {
         input.value += copyString;
-        console.log("copyApaste : paste " + " copyString = " + copyString + " .. txt = " + txt + txt.value);
+        console.log("copyApaste : paste " + " copyString = " + copyString + " : txt = " + txt );
     }
     else {
         copyString = txt;
-        console.log("copyApaste : copy " + "copyString = " + copyString + " .. txt = " + txt);
+        console.log("copyApaste : copy " + "copyString = " + copyString + " : txt = " + txt);
     }
 });
 
@@ -105,12 +105,4 @@ bracket.addEventListener('click', function () {
             input.value += "(";
         }
     }
-})
-
-/* 
-   triFunction.addEventListener('click', function(){
-      window.open('popup/triFunction.html', 'trifunction', 'width=300, height=400, scrollbars= 0, toolbar=0, menubar=no');
-   }); */
-sin.addEventListener('click', function () {
-    alert('sdkljf');
 });
