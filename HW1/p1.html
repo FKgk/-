@@ -2,21 +2,35 @@
 <html>
 <head>
    <title>
-      cal
+      calculation
    </title>
+   <meta name="viewport" content="width=device-width", initial-scale="1">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.8.0/math.js"></script>
-   
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   <!-- <Script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></Script> -->
 </head>
 <body>
    <input type="text" id="input">
-   <div id="result"></div>
+   <div id="result">></div>
    <table>
+      <tr>
+         <td colspan="2">
+            <select name="tri" id="triFunction" value="삼각">
+        <option type="button" id="sin" value="sin">sin</option>
+         </select>
+         </td>
+      </tr>
       <tr>
          <td><input type="button" id="clear" value="c"></td>
          <td><input type="button" id="bracket" value="()"></td>
+         <td><input type="button" id="copyApaste" value="copy&paste"></td>         
+      </tr>
+      <tr>
+         
          <td><input type="button" id="o4" value="%"></td>
          <td><input type="button" id="o3" value="/"></td>
-         <td><input type="button" id="copyApaste" value="copy&paste"</td>
+         <td><input type="button" id="backSpace" value="<"></td>
+         
       </tr>
       <tr>
          <td><input type="button" id="n1" value="1"></td>
@@ -35,76 +49,19 @@
          <td><input type="button" id="n8" value="8"></td>
          <td><input type="button" id="n9" value="9"></td>
          <td><input type="button" id="o0" value="+"></td>
+         <td></td>
       </tr>
       <tr>
          <td><input type="button" id="n0" value="0"></td>
          <td><input type="button" id="o5" value="."></td>
          <td><input type="button" id="enter" value="="></td>
+         <td></td>
       </tr>
    </table>
    <table>
    </table>
 </body>
-<script>
-   var result = document.getElementById('result');
-   var input = document.getElementById('input');
-   var enter = document.getElementById('enter');
-   var clear = document.getElementById('clear');
-   var numberButtons = [0,0,0,0,0, 0, 0, 0, 0, 0];
-   var operations = [ '+','-','*','/','%','.'];
-   var operationButtons = [];
-   var copyString = "";
-   var copyApaste = document.getElementById('copyApaste');
-   for(let i = 0; i < numberButtons.length; i++)
-   {
-      numberButtons[i] = document.getElementById("n" + i);
-
-      numberButtons[i].addEventListener('click', function(){
-         input.value += numberButtons[i].value;
-         cosole.log("numberButtons[" + i + "] (" + numberButtons[i].value + ") : input.value = " + input.value);
-      });
-   }
-
-   for(let i = 0; i < operations.length; i++)
-   {
-      operationButtons[i] = document.getElementById("o"+i);
-
-      operationButtons[i].addEventListener('click', function(){
-         input.value += operations[i];
-         cosole.log("operationButtons[" + i + "] (" + operations[i] + ") : input.value = " + input.value);
-      });
-   }
-
-   enter.addEventListener('click', function(){
-      result.innerHTML = eval(input.value);
-      cosole.log("enter : result.value = " + result.innerHTML);
-   });
-
-   clear.addEventListener('click', function(){
-      input.value = "";
-      cosole.log("clear : input.value = " + input.value);
-   });
-   copyApaste.addEventListener('click', function(){
-      let txt = "";
-      if (window.getSelection) {
-         txt = window.getSelection();
-      } else if (document.getSelection) {
-         txt = document.getSelection();
-      } else if (document.selection) {
-         txt = document.selection.createRange().text;
-      } else {
-         console.log("Erorr copytApaste");
-      }
-      if(txt == "")
-      {
-         input.value += copyString;
-         console.log("copyApaste : " + input.value + " + " + copyString);
-      }
-      else
-      {
-         copyString = txt;
-         console.log("copyApaste : " + "copyString = " + copyString);
-      }  
-   });
+<script src="p1.js">
+   
 </script>
 </html>
