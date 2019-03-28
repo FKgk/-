@@ -7,12 +7,11 @@ var operations = ['+', '-', '*', '/', '%', '.'];
 var operationButtons = [];
 var copyString = "";
 var copyApaste = document.getElementById('copyApaste');
+
 var backSpace = document.getElementById('backSpace');
 var bracket = document.getElementById('bracket');
 var bracketCount = 0;
 
-var triFunction = document.getElementById('triFunction');
-var sin = document.getElementById('sin');
 
 
 for (let i = 0; i < numberButtons.length; i++) {
@@ -43,34 +42,28 @@ clear.addEventListener('click', function () {
     console.log("clear : input.value = " + input.value);
 });
 copyApaste.addEventListener('click', function () {
-    alert(copyString);
     let txt = "";
     if (window.getSelection) {
         txt = window.getSelection();
         console.log("window.getSelection : txt = " + txt);
-        if (txt == "") {
-            console.log("txt wrong : " + txt);
-        }
-        else {
-            console.log("txt right : " + txt);
-
-        }
-    } else if (document.getSelection) {
+    } else {
+        /*else if (document.getSelection) {
         txt = document.getSelection();
-        console.log("document.getSelection : txt = " + txt);
     } else if (document.selection) {
         txt = document.selection.createRange().text;
-        console.log("document.selection : txt = " + txt);
-    } else {
-        console.log("Erorr copytApaste");
+    }*/
+    console.log("copyApaste Error wrong detection windo.getSelection == false");
     }
-    if (txt == "" || txt == undefined) {
-        input.value += copyString;
-        console.log("copyApaste : paste " + " copyString = " + copyString + " : txt = " + txt );
+
+    if (txt.toString() == "" || txt.toString() == copyString) {
+        input.value = input.value + "" + copyString;
+
+        console.log("paste : input.value = " + input.value);
     }
     else {
-        copyString = txt;
-        console.log("copyApaste : copy " + "copyString = " + copyString + " : txt = " + txt);
+        copyString = txt.toString();
+        
+        console.log("copy : copyString = " + copyString);
     }
 });
 
