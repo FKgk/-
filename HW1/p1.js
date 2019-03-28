@@ -33,8 +33,17 @@ for (let i = 0; i < operations.length; i++) {
 }
 
 enter.addEventListener('click', function () {
-    result.innerHTML = "&gt;" + eval(input.value);
-    console.log("enter : result.value = " + result.innerHTML);
+    try{
+        result.innerHTML = "&gt;" + eval(input.value);
+        console.log("enter : result.value = " + result.innerHTML);
+    }
+    catch(ex){
+        console.log("enter Error : " + ex.message);
+        alert("Please check the formula \nThis formula can't be calculated.")
+    }
+    finally{
+
+    }
 });
 
 clear.addEventListener('click', function () {
