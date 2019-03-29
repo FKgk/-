@@ -6,61 +6,194 @@
    </title>
    <meta name="viewport" content="width=device-width", initial-scale="1">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.8.0/math.js"></script>
-   <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-<script src="https://code.jquery.com/jquery-latest.js"></script>
 
-   <!-- <Script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></Script> -->
-   <style src="p1.css"></style>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+   integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+   integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </head>
-<body>
+<body onresize="parent.resizeTo(284,160)" onload="parent.resizeTo(284,160)">
    <input type="text" id="input">
-   <div id="result" width="100px">=</div>
-
+   <br>
+   <div id="result" style="display:inline-block; width: 120px;">=</div>
+   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#history"
+      style="width:70px; height: auto;">
+      history
+   </button>
    <table>
       <tr>
-         <input type="button" id="newmodal" value="삼각">
+         <td colspan="2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#triFunction"
+               style="width:60px;height: auto;">
+               삼각
+            </button>
+         </td>
+
+         <td colspan="2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logFunction"
+               style="width:60px;height: auto;">
+               로그
+            </button>
+         </td>
+
+         <td colspan="2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#powerFunction"
+               style="width:60px;height: auto;">
+               지수
+            </button>
+         </td>
       </tr>
       <tr>
          <td colspan="2"><input type="button" id="copyApaste" value="c&amp;p"></td>
-         <td><input type="button" id="backSpace" value="&lt;"></td>
-         <td><input type="button" id="clear" value="C"></td>         
-      </tr>
+         <td><input type="button" id="backSpace" value="AC"></td>
+         <td><input type="button" id="clear" value="C"></td>
+         <td>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#introduction" style="width:70px; height: auto;">
+               ?
+            </button>
+         </td>
       <tr>
-         <td><input type="button" id="o6" value="("></td>
-         <td><input type="button" id="o7" value=")"></td>
-         <td><input type="button" id="o8" value="["></td>
-         <td><input type="button" id="o9" value="]"></td>
+         <td><input type="button" class="normalOperation" value="("></td>
+         <td><input type="button" class="normalOperation" value=")"></td>
+         <td><input type="button" class="normalOperation" value="["></td>
+         <td><input type="button" class="normalOperation" value="]"></td>
 
       </tr>
       <tr>
-         <td><input type="button" id="n1" value="1"></td>
-         <td><input type="button" id="n2" value="2"></td>
-         <td><input type="button" id="n3" value="3"></td>
-         <td><input type="button" id="o4" value="%"></td>
+         <td><input type="button" class="number" value="1"></td>
+         <td><input type="button" class="number" value="2"></td>
+         <td><input type="button" class="number" value="3"></td>
+         <td><input type="button" class="normalOperation" value="^"></td>
+         <td><input type="button" class="normalOperation" value="%"></td>
       </tr>
       <tr>
-         <td><input type="button" id="n4" value="4"></td>
-         <td><input type="button" id="n5" value="5"></td>
-         <td><input type="button" id="n6" value="6"></td>
-         <td><input type="button" id="o2" value="*"></td>
-         <td><input type="button" id="o3" value="/"></td>
+         <td><input type="button" class="number" value="4"></td>
+         <td><input type="button" class="number" value="5"></td>
+         <td><input type="button" class="number" value="6"></td>
+         <td><input type="button" class="normalOperation" value="*"></td>
+         <td><input type="button" class="normalOperation" value="/"></td>
       </tr>
       <tr>
-         <td><input type="button" id="n7" value="7"></td>
-         <td><input type="button" id="n8" value="8"></td>
-         <td><input type="button" id="n9" value="9"></td>
-         <td><input type="button" id="o0" value="+"></td>
-         <td><input type="button" id="o1" value="-"></td>
+         <td><input type="button" class="number" value="7"></td>
+         <td><input type="button" class="number" value="8"></td>
+         <td><input type="button" class="number" value="9"></td>
+         <td><input type="button" class="normalOperation" value="+"></td>
+         <td><input type="button" class="normalOperation" value="-"></td>
       </tr>
       <tr>
-         <td><input type="button" id="o5" value="."></td>
-         <td><input type="button" id="n0" value="0"></td>
-         <td><input type="button" id="o10" value=","></td>
+         <td><input type="button" class="normalOperation" value="."></td>
+         <td><input type="button" class="number" value="0"></td>
+         <td><input type="button" class="normalOperation" value=","></td>
          <td><input type="button" id="enter" value="="></td>
       </tr>
    </table>
 
+   
 
+   <div class="modal fade" id="triFunction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-body">
+               <tabel>
+                  <tr>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="sin">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="cos">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="tan">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default number" data-dismiss="modal" style="background-color: skyblue;"
+                           value="pi">
+                     </td>
+                  </tr>
+               </tabel>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="logFunction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-body">
+               <table>
+                     <tr>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log">
+                        </td>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log10">
+                        </td>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log2">
+                        </td>
+                        <td>
+                           <input type="button" class="btn btn-default number" data-dismiss="modal" style="background-color: skyblue;"
+                              value="e">
+                        </td>
+                     </tr>
+                  </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="powerFunction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-body">
+               <table>
+                     <tr>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="sqrt">
+                        </td>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="exp">
+                        </td>
+                     </tr>
+                  </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-body" >
+               <table id="history-tablelist">
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="introduction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <h4 class="modal-title" id="myModalLabel">도움말</h4>
+            <div class="modal-body" >
+               <p>
+                  '='이 있는 곳이 결과가 나오는 곳입니다.
+                  삼각, 로그, 지수는 각 필요한 함수들이 들어있습니다.
+                  AC는 전체를 삭제하고, C는 한 개씩 삭제합니다.
+               </p>
+            </div>
+         </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
+      </div>
+   </div>
 </body>
 <script src="p1.js"></script>
 </html>
