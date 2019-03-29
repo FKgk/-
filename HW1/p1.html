@@ -6,24 +6,30 @@
    </title>
    <meta name="viewport" content="width=device-width", initial-scale="1">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.8.0/math.js"></script>
-   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
    <!-- <Script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></Script> -->
    <style src="p1.css"></style>
 </head>
 <body>
    <input type="text" id="input">
-   <div id="result">></div>
+   <div id="result" width="100px">=</div>
+
    <table>
       <tr>
+         <input type="button" id="newmodal" value="삼각">
       </tr>
       <tr>
          <td colspan="2"><input type="button" id="copyApaste" value="c&amp;p"></td>
-         <td><input type="button" id="clear" value="C"></td>
          <td><input type="button" id="backSpace" value="&lt;"></td>
-         
+         <td><input type="button" id="clear" value="C"></td>         
       </tr>
       <tr>
-         <td><input type="button" id="bracket" value="()"></td>
+         <td><input type="button" id="o6" value="("></td>
+         <td><input type="button" id="o7" value=")"></td>
+         <td><input type="button" id="o8" value="["></td>
+         <td><input type="button" id="o9" value="]"></td>
 
       </tr>
       <tr>
@@ -49,9 +55,12 @@
       <tr>
          <td><input type="button" id="o5" value="."></td>
          <td><input type="button" id="n0" value="0"></td>
+         <td><input type="button" id="o10" value=","></td>
          <td><input type="button" id="enter" value="="></td>
       </tr>
    </table>
+
+
 </body>
 <script src="p1.js"></script>
 </html>

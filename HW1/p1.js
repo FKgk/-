@@ -3,16 +3,11 @@ var input = document.getElementById('input');
 var enter = document.getElementById('enter');
 var clear = document.getElementById('clear');
 var numberButtons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var operations = ['+', '-', '*', '/', '%', '.'];
+var operations = ['+', '-', '*', '/', '%', '.', '(', ')', '[', ']', ','];
 var operationButtons = [];
 var copyString = "";
 var copyApaste = document.getElementById('copyApaste');
-
 var backSpace = document.getElementById('backSpace');
-var bracket = document.getElementById('bracket');
-var bracketCount = 0;
-
-
 
 for (let i = 0; i < numberButtons.length; i++) {
     numberButtons[i] = document.getElementById("n" + i);
@@ -28,21 +23,19 @@ for (let i = 0; i < operations.length; i++) {
 
     operationButtons[i].addEventListener('click', function () {
         input.value += operations[i];
-        console.log("operationButtons[" + i + "] (" + operations[i] + ") : input.value = " + input.value);
+        console.log("operationButtons[" + i + "] '" + operations[i] + "' : input.value = " + input.value);
     });
 }
 
 enter.addEventListener('click', function () {
     try{
-        result.innerHTML = "&gt;" + eval(input.value);
+        result.innerHTML = "&#61;" + math.eval(input.value);
         console.log("enter : result.value = " + result.innerHTML);
     }
     catch(ex){
         console.log("enter Error : " + ex.message);
-        alert("Please check the formula \nThis formula can't be calculated.")
-    }
-    finally{
-
+        console.log("input.value = " + input.value);
+        alert("Please check the formula \nThis formula can't be calculated.");
     }
 });
 
@@ -80,31 +73,4 @@ backSpace.addEventListener('click', function () {
     input.value = input.value.substr(0, input.value.length - 1);
 
     console.log("backSpace input.value : " + input.value);
-});
-
-bracket.addEventListener('click', function () {
-    if (input.value[input.value.length - 1] in operations) {
-        bracketCount++;
-        input.value += "(";
-    }
-    else if (input.value[input.value.length - 1] == ')') {
-        if (bracketCount == 0) {
-            bracketCount++;
-            input.value += "*(";
-        }
-        else {
-            bracketCount--;
-            input.value += ")";
-        }
-    }
-    else {
-        if (bracketCount > 0) {
-            bracketCount--;
-            input.value += ")";
-        }
-        else {
-            bracketCount++;
-            input.value += "(";
-        }
-    }
 });

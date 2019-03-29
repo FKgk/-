@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            test
+        </title>
+    </head>
+    <body>
+        <input type="button" id="b" value="popup">
+
+        <script>
+            let button = document.getElementById('b');
+
+            button.addEventListener('click', function(){
+                window.open("popup/tpopup.html", "popup", "width=300, height=360, status=no, toolbar=no, location=no, menubar=no, scrollbars=no, left=150, top=100");
+            });
+        </script>
+    </body>
+</html>
