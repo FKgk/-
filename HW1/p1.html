@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html style="text-align: center">
 <head>
    <title>
-      calculation
+      calculator
    </title>
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.8.0/math.js"></script>
 
+   <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.8.0/math.js"></script>
+   
+   <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+      </script>
+   
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -15,68 +20,101 @@
    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<style>
-input, button{
-   width:46px;
-   height: auto;
-}
-.modal > input{
-   width:auto;
-   height:auto;
-}
-</style>
+   
+   <style>
+      body{
+         margin : 0px;
+      }
+      input, button{
+         width:100px;
+         height: 50px;
+      }
+      .modal > input{
+         width:auto;
+         height:auto;
+      }
+      .history_list{
+         width:400px;
+         text-align: center center;
+      }
+      .IO{
+         border: 1px groove blue;
+         background-color: bisque;
+         text-align: right;
+         font-size: 30px;
+      }
+   </style>
 </head>
-<body onresize="parent.resizeTo(284,160)" onload="parent.resizeTo(284,160)">
-   <input type="text" id="input" style="width:240px;height: auto; overflow: auto;">
-   <br>
-   <div id="result" style="display:inline-block; width: 165px; overflow:auto;">=</div>
-   <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#history"
-      style="width:70px; height: auto;">
-      history
-   </button>
-   <table>
+<body>
+   <table style="margin: auto;">
+      <tr>
+         <td colspan="5">
+            <div type="text" id="input" class="IO" style="width:500; height:50px;"></div>
+         </td>
+      </tr>
+
+      <tr>
+         <td colspan="4">
+            <div id="result" class="IO" style="display:inline-block; width: 400px; height:50px; margin-bottom: 5px;"></div>
+         </td>
+         <td>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#history"
+               style="width:100px; height: 50px;">
+               history
+            </button>
+         </td>
+      </tr>
+   
+   
       <tr>
          <td >
             <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#triFunction">
                삼각
             </button>
          </td>
-
          <td >
             <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#logFunction">
-               로그
+               로그&지수
             </button>
          </td>
-
-         <td >
-            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#powerFunction">
-               지수
+         <td>
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#procession">
+               행렬
             </button>
          </td>
+         <td>
 
          </td>
-      </tr>
-      <tr>
-         <td><input type="button" class="btn btn-dark btn-sm"  id="copyApaste" value="c&amp;p"></td>  
-         <td><input type="button" class="btn btn-dark btn-sm"  id="clear" value="AC"></td>  
-         <td><input type="button" class="btn btn-dark btn-sm"  id="backSpace" value="C"></td>
-         <td> 
-            <button type="button" class="btn btn-info btn-sm"  data-toggle="modal" data-target="#introduction">
+         <td>
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#introduction">
                ?
             </button>
          </td>
+      </tr>
+      <tr>
+         <td>
+            <input type="button" class="btn btn-dark btn-sm number" data-dismiss="modal" value="pi">
+         </td>
+         <td>
+            <input type="button" class="btn btn-dark btn-sm number" data-dismiss="modal" value="e">
+         </td>
+         <td><input type="button" class="btn btn-dark btn-sm"  id="copyApaste" value="c&amp;p"></td>  
+         <td><input type="button" class="btn btn-dark btn-sm"  id="clear" value="AC"></td>  
+         <td><input type="button" class="btn btn-dark btn-sm"  id="backSpace" value="C"></td>
+         
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="("></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=")"></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="["></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="]"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="^"></td>
       </tr>
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm number" value="1"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="2"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="3"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="^"></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="!"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="="></td>
       </tr>
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm number" value="4"></td>
@@ -96,7 +134,7 @@ input, button{
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="."></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="0"></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=","></td>
-         <td><input type="button" class="btn btn-dark btn-sm" id="enter" value="="></td>
+         <td><input type="button" class="btn btn-dark btn-sm" id="enter" value="EN"></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="%"></td>
       </tr>
    </table>
@@ -117,10 +155,6 @@ input, button{
                      </td>
                      <td>
                         <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="tan">
-                     </td>
-                     <td>
-                        <input type="button" class="btn btn-default number" data-dismiss="modal" style="background-color: skyblue;"
-                           value="pi">
                      </td>
                   </tr>
                </tabel>
@@ -144,9 +178,15 @@ input, button{
                         <td>
                            <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log2">
                         </td>
+                     </tr>
+                     <tr>
                         <td>
-                           <input type="button" class="btn btn-default number" data-dismiss="modal" style="background-color: skyblue;"
-                              value="e">
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                              style="background-color: skyblue;" value="sqrt">
+                        </td>
+                        <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                              style="background-color: skyblue;" value="exp">
                         </td>
                      </tr>
                   </table>
@@ -155,20 +195,23 @@ input, button{
       </div>
    </div>
 
-   <div class="modal fade" id="powerFunction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+
+   <div class="modal fade" id="procession" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-body">
                <table>
-                     <tr>
-                        <td>
-                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="sqrt">
-                        </td>
-                        <td>
-                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="exp">
-                        </td>
-                     </tr>
-                  </table>
+                  <tr>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                           style="background-color: skyblue;" value="det">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                           style="background-color: skyblue;" value="cross">
+                     </td>
+                  </tr>
+               </table>
             </div>
          </div>
       </div>
@@ -205,3 +248,14 @@ input, button{
 </body>
 <script src="p1.js"></script>
 </html>
+
+ 
+<!--
+   파이 &#8719
+   마이너스 &#8722
+   곱하기 &#8727 
+   루트 표시 &radic; 
+   나누기 &#247;
+   > &#62
+   < &#60
+-->
