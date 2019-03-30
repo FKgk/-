@@ -15,81 +15,89 @@
    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+<style>
+input, button{
+   width:46px;
+   height: auto;
+}
+.modal > input{
+   width:auto;
+   height:auto;
+}
+</style>
 </head>
 <body onresize="parent.resizeTo(284,160)" onload="parent.resizeTo(284,160)">
-   <input type="text" id="input">
+   <input type="text" id="input" style="width:240px;height: auto; overflow: auto;">
    <br>
-   <div id="result" style="display:inline-block; width: 120px;">=</div>
-   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#history"
+   <div id="result" style="display:inline-block; width: 165px; overflow:auto;">=</div>
+   <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#history"
       style="width:70px; height: auto;">
       history
    </button>
    <table>
       <tr>
-         <td colspan="2">
-            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#triFunction"
-               style="width:60px;height: auto;">
+         <td >
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#triFunction">
                삼각
             </button>
          </td>
 
-         <td colspan="2">
-            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#logFunction"
-               style="width:60px;height: auto;">
+         <td >
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#logFunction">
                로그
             </button>
          </td>
 
-         <td colspan="2">
-            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#powerFunction"
-               style="width:60px;height: auto;">
+         <td >
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#powerFunction">
                지수
             </button>
          </td>
+
+         </td>
       </tr>
       <tr>
-         <td colspan="2"><input type="button" id="copyApaste" value="c&amp;p"></td>
-         <td><input type="button" id="backSpace" value="AC"></td>
-         <td><input type="button" id="clear" value="C"></td>
-         <td>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#introduction" style="width:70px; height: auto;">
+         <td><input type="button" class="btn btn-dark btn-sm"  id="copyApaste" value="c&amp;p"></td>  
+         <td><input type="button" class="btn btn-dark btn-sm"  id="clear" value="AC"></td>  
+         <td><input type="button" class="btn btn-dark btn-sm"  id="backSpace" value="C"></td>
+         <td> 
+            <button type="button" class="btn btn-info btn-sm"  data-toggle="modal" data-target="#introduction">
                ?
             </button>
          </td>
       <tr>
-         <td><input type="button" class="normalOperation" value="("></td>
-         <td><input type="button" class="normalOperation" value=")"></td>
-         <td><input type="button" class="normalOperation" value="["></td>
-         <td><input type="button" class="normalOperation" value="]"></td>
-
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="("></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=")"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="["></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="]"></td>
       </tr>
       <tr>
-         <td><input type="button" class="number" value="1"></td>
-         <td><input type="button" class="number" value="2"></td>
-         <td><input type="button" class="number" value="3"></td>
-         <td><input type="button" class="normalOperation" value="^"></td>
-         <td><input type="button" class="normalOperation" value="%"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="1"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="2"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="3"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="^"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="!"></td>
       </tr>
       <tr>
-         <td><input type="button" class="number" value="4"></td>
-         <td><input type="button" class="number" value="5"></td>
-         <td><input type="button" class="number" value="6"></td>
-         <td><input type="button" class="normalOperation" value="*"></td>
-         <td><input type="button" class="normalOperation" value="/"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="4"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="5"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="6"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="*"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="/"></td>
       </tr>
       <tr>
-         <td><input type="button" class="number" value="7"></td>
-         <td><input type="button" class="number" value="8"></td>
-         <td><input type="button" class="number" value="9"></td>
-         <td><input type="button" class="normalOperation" value="+"></td>
-         <td><input type="button" class="normalOperation" value="-"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="7"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="8"></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="9"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="+"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="-"></td>
       </tr>
       <tr>
-         <td><input type="button" class="normalOperation" value="."></td>
-         <td><input type="button" class="number" value="0"></td>
-         <td><input type="button" class="normalOperation" value=","></td>
-         <td><input type="button" id="enter" value="="></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="."></td>
+         <td><input type="button" class="btn btn-dark btn-sm number" value="0"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=","></td>
+         <td><input type="button" class="btn btn-dark btn-sm" id="enter" value="="></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="%"></td>
       </tr>
    </table>
 
