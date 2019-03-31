@@ -54,7 +54,7 @@ enter.addEventListener('click', function () {
                         value = input.innerHTML + " &#61; " + answer.toString();
                     }
 
-                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' id='history" + historyCount + "' data-dismiss='modal' onclick=\"input.innerHTML='" + input.innerHTML + "'; result.innerHTML = '" + answer + "'\">" + value + "</button></tr>";
+                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"input.innerHTML='" + input.innerHTML + "'; result.innerHTML = '" + answer + "'\">" + value + "</button></tr>";
             }
             catch (ex) {
                 console.log("enter Error : " + ex.message);
