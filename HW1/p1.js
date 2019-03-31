@@ -9,7 +9,6 @@ var historyList = document.getElementById('history-tablelist');
 var numbers = document.getElementsByClassName('number');
 var normalOperations = document.getElementsByClassName('normalOperation');
 var specialOperations = document.getElementsByClassName('specialOperation');
-var historyCount = 0;
 var copyString = "";
 
 var calFormula = math.parser();
@@ -110,5 +109,5 @@ backSpace.addEventListener('click', function () {
 
 /* 
 모달 안 꺼지게
-$('#newModal').modal({ backdrop: 'static', keyboard: false }); 
+$('#keyboard').modal({ backdrop: 'static', keyboard: false });
 */

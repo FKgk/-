@@ -29,7 +29,7 @@
          width:100px;
          height: 50px;
       }
-      .modal > input{
+      .modal > input, .modal > button{
          width:auto;
          height:auto;
       }
@@ -64,7 +64,7 @@
             </button>
          </td>
       </tr>
-   
+      
    
       <tr>
          <td >
@@ -83,7 +83,9 @@
             </button>
          </td>
          <td>
-
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#keyboard">
+               keyboard
+            </button>
          </td>
          <td>
             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#introduction">
@@ -209,6 +211,51 @@
                      <td>
                         <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
                            style="background-color: skyblue;" value="cross">
+                     </td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="keyboard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-body">
+               <table>
+                  <tr>
+                     <td>
+                        <div>
+                           변수 : 
+                        </div>
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default btn-sm number alphabet" style="background-color: skyblue;"
+                           data-dismiss="modal" value="x">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default btn-sm number alphabet" style="background-color: skyblue;"
+                           data-dismiss="modal" value="y">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default btn-sm number alphabet" style="background-color: skyblue;"
+                           data-dismiss="modal" value="z">
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <div>
+                           함수 : 
+                        </div>
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default btn-sm specialOperation alphabet" style="background-color: skyblue;"
+                           data-dismiss="modal" value="f">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default btn-sm specialOperation alphabet" style="background-color: skyblue;"
+                           data-dismiss="modal" value="g">
                      </td>
                   </tr>
                </table>
