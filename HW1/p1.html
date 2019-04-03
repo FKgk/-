@@ -20,10 +20,9 @@
    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-   
    <style>
       body{
-         margin : 0px;
+         margin : 0px;s
       }
       input, button{
          width:100px;
@@ -95,7 +94,7 @@
       </tr>
       <tr>
          <td>
-            <input type="button" class="btn btn-dark btn-sm number" data-dismiss="modal" value="pi">
+            <input type="button" class="btn btn-dark btn-sm number" data-dismiss="modal" value="&#120587;">
          </td>
          <td>
             <input type="button" class="btn btn-dark btn-sm number" data-dismiss="modal" value="e">
@@ -122,15 +121,15 @@
          <td><input type="button" class="btn btn-dark btn-sm number" value="4"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="5"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="6"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="*"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="/"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="+"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="-"></td>
       </tr>
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm number" value="7"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="8"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="9"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="+"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="-"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="*"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="/"></td>
       </tr>
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="."></td>
@@ -138,6 +137,10 @@
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=","></td>
          <td><input type="button" class="btn btn-dark btn-sm" id="enter" value="EN"></td>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="%"></td>
+      </tr>
+      <tr>
+         <td><input type="button" class="btn btn-dark btn-sm" id="cursorLeft" value="&lt;"></td>
+         <td><input type="button" class="btn btn-dark btn-sm" id="cursorRight" value=">"></td>
       </tr>
    </table>
 
@@ -184,7 +187,7 @@
                      <tr>
                         <td>
                            <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
-                              style="background-color: skyblue;" value="sqrt">
+                              style="background-color: skyblue;" value="&radic;">
                         </td>
                         <td>
                            <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
@@ -211,6 +214,14 @@
                      <td>
                         <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
                            style="background-color: skyblue;" value="cross">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;"
+                           value="dot">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;"
+                           value="inv">
                      </td>
                   </tr>
                </table>
@@ -267,7 +278,7 @@
    <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
       <div class="modal-dialog" role="document">
          <div class="modal-content">
-            <div class="modal-body" >
+            <div class="modal-body">
                <table id="history-tablelist">
                </table>
             </div>

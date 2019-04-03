@@ -10,37 +10,61 @@ var numbers = document.getElementsByClassName('number');
 var normalOperations = document.getElementsByClassName('normalOperation');
 var specialOperations = document.getElementsByClassName('specialOperation');
 var copyString = "";
-
+var leftInput = "", rightInput = "";
+var cursorLeft = document.getElementById('cursorLeft');
+var cursorRight = document.getElementById('cursorRight');
 var calFormula = math.parser();
 
+function calculateResult(){
+    try{
+        console.log("input.innerHTML : " + input.innerHTML);
+        let replaceInput = input.innerHTML.replace('𝜋', 'pi').replace('√', 'sqrt');
+        let tmp = calFormula.eval(replaceInput).toString();
+        result.innerHTML = tmp;
+    }
+    catch(e){
+        console.log('계산할 수 없는 수식이므로 작동하지 않는다.');
+    }
+    finally{
+        if(input.innerHTML == "")
+            result.innerHTML = "";
+    }
 
+}
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener('click', function () {
-        input.innerHTML += numbers[i].value;
+        leftInput += numbers[i].value;
+        input.innerHTML = leftInput + rightInput;
+        calculateResult();
         console.log("numberButtons[" + i + "] (" + numbers[i].value + ") : input.innerHTML = " + input.innerHTML);
     });
 }
 
 for (let i = 0; i < normalOperations.length; i++) {
     normalOperations[i].addEventListener('click', function () {
-        input.innerHTML += normalOperations[i].value;
+        leftInput += normalOperations[i].value;
+        input.innerHTML = leftInput + rightInput;
+        calculateResult();
         console.log("normalOperations[" + i + "] '" + normalOperations[i].value + "' : input.value = " + input.innerHTML);
     });
 }
-for (let i = 0; i < specialOperations.length; i++)
-{
+for (let i = 0; i < specialOperations.length; i++) {
     specialOperations[i].addEventListener('click', function(){
-        input.innerHTML += specialOperations[i].value + "(";
+        leftInput += specialOperations[i].value + "(";
+        input.innerHTML = leftInput + rightInput;
+        calculateResult();
         console.log("specialOperations[" + i + "] '" + specialOperations[i].value + "' : input.value = " + input.innerHTML);
     });
 }
 
 enter.addEventListener('click', function () {
     try{
-        let answer = calFormula.eval(input.innerHTML).toString();
+        let replaceInput = input.innerHTML.replace('&#120587;', 'pi').replace('&radic;', 'sqrt');
+        let answer = calFormula.eval(replaceInput).toString();
         
         if(answer.split(' ')[0] == 'function'){
-            answer = answer.split(' ');
+            console.log(answer);
+            answer = answer.split(' ')[0];
         }
         else{
             try {
@@ -64,7 +88,6 @@ enter.addEventListener('click', function () {
         }
         result.innerHTML = answer;
         
-
         console.log("enter : result.value = " + result.innerHTML);
     }
     catch(ex){
@@ -76,6 +99,9 @@ enter.addEventListener('click', function () {
 
 clear.addEventListener('click', function () {
     input.innerHTML = "";
+    result.innerHTML = "";
+    leftInput = "";
+    rightInput = "";
     console.log("clear : input.innerHTML = " + input.innerHTML);
 });
 
@@ -88,6 +114,7 @@ copyApaste.addEventListener('click', function () {
         if (txt.toString() == "" || txt.toString() == copyString) {
             input.innerHTML = input.innerHTML + "" + copyString;
 
+            calculateResult();
             console.log("paste : input.innerHTML = " + input.innerHTML);
         }
         else {
@@ -102,12 +129,20 @@ copyApaste.addEventListener('click', function () {
 });
 
 backSpace.addEventListener('click', function () {
-    input.innerHTML = input.innerHTML.substr(0, input.innerHTML.length - 1);
+    leftInput = leftInput.substr(0, leftInput.length - 1);
+    input.innerHTML = leftInput + rightInput;
 
+    calculateResult();
     console.log("backSpace input.innerHTML : " + input.innerHTML);
 });
+cursorLeft.addEventListener('click', function () {
+    rightInput = leftInput.substr(leftInput.length - 1, 1) + rightInput;
+    leftInput = leftInput.substr(0, leftInput.length - 1);
+    input.innerHTML = leftInput + rightInput;
+});
 
-/* 
-모달 안 꺼지게
-$('#keyboard').modal({ backdrop: 'static', keyboard: false });
-*/
+cursorRight.addEventListener('click', function () {
+    leftInput = leftInput + rightInput.substr(0, 1);
+    rightInput = rightInput.substr(1, rightInput.length - 1);
+    input.innerHTML = leftInput + rightInput;
+});
