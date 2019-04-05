@@ -14,23 +14,31 @@ var leftInput = "", rightInput = "";
 var cursorLeft = document.getElementById('cursorLeft');
 var cursorRight = document.getElementById('cursorRight');
 var calFormula = math.parser();
+var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', 'exp', '√', 'det', 'cross', 'dot', 'inv'];
+
 
 function getReplaceInput(){
-    return input.innerHTML.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10');
+    let t = input.value
+    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10');
 }
 
+function inputFocus(){
+    input.focus();
+    input.setSelectionRange(leftInput.length, leftInput.length);
+}
 function calculateResult(){
     try{
-        console.log("input.innerHTML : " + input.innerHTML);
+        console.log("input.value: " + input.value);
         let replaceInput = getReplaceInput();
         let tmp = calFormula.eval(replaceInput).toString();
-        result.innerHTML = tmp;
+        if(tmp.split(" ")[0] != "function")
+            result.innerHTML = tmp;
     }
     catch(e){
         console.log('계산할 수 없는 수식이므로 작동하지 않는다.');
     }
     finally{
-        if(input.innerHTML == "")
+        if(input.value == "")
             result.innerHTML = "";
     }
 
@@ -38,26 +46,29 @@ function calculateResult(){
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener('click', function () {
         leftInput += numbers[i].value;
-        input.innerHTML = leftInput + rightInput;
+        input.value = leftInput + rightInput;
         calculateResult();
-        console.log("numberButtons[" + i + "] (" + numbers[i].value + ") : input.innerHTML = " + input.innerHTML);
+        inputFocus();
+        console.log("numberButtons[" + i + "] (" + numbers[i].value + ") : input.value = " + input.value);
     });
 }
 
 for (let i = 0; i < normalOperations.length; i++) {
     normalOperations[i].addEventListener('click', function () {
         leftInput += normalOperations[i].value;
-        input.innerHTML = leftInput + rightInput;
+        input.value = leftInput + rightInput;
         calculateResult();
-        console.log("normalOperations[" + i + "] '" + normalOperations[i].value + "' : input.value = " + input.innerHTML);
+        inputFocus();
+        console.log("normalOperations[" + i + "] '" + normalOperations[i].value + "' : input.value = " + input.value);
     });
 }
 for (let i = 0; i < specialOperations.length; i++) {
     specialOperations[i].addEventListener('click', function(){
         leftInput += specialOperations[i].value + "(";
-        input.innerHTML = leftInput + rightInput;
+        input.value = leftInput + rightInput;
         calculateResult();
-        console.log("specialOperations[" + i + "] '" + specialOperations[i].value + "' : input.value = " + input.innerHTML);
+        inputFocus();
+        console.log("specialOperations[" + i + "] '" + specialOperations[i].value + "' : input.value = " + input.value);
     });
 }
 
@@ -69,20 +80,23 @@ enter.addEventListener('click', function () {
         if(answer.split(' ')[0] == 'function'){
             console.log(answer);
             answer = answer.split(' ')[0];
+            historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.innerHTML = '" + answer + "'\">" + input.value + "</button></tr>";
+            result.innerHTML = rightInput = leftInput = "";
+            
         }
         else{
             try {
                 let value ="";
-                if (input.innerHTML.match('=') && 
-                    (!input.innerHTML.match('!=') && !input.innerHTML.match('>=') && !input.innerHTML.match('<=')))
+                if (input.value.match('=') && 
+                    (!input.value.match('!=') && !input.value.match('>=') && !input.value.match('<=')))
                     {
-                        value = input.innerHTML.replace('=', ' = ');
+                        value = input.value.replace('=', ' = ');
                     }
                     else{
-                        value = input.innerHTML + " &#61; " + answer.toString();
+                        value = input.value + " &#61; " + answer.toString();
                     }
 
-                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"input.innerHTML='" + input.innerHTML + "'; result.innerHTML = '" + answer + "'\">" + value + "</button></tr>";
+                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.innerHTML = '" + answer + "'\">" + value + "</button></tr>";
             }
             catch (ex) {
                 console.log("enter Error : " + ex.message);
@@ -92,21 +106,23 @@ enter.addEventListener('click', function () {
         }
         result.innerHTML = answer;
         
+        inputFocus();
         console.log("enter : result.value = " + result.innerHTML);
     }
     catch(ex){
         console.log("enter Error : " + ex.message);
-        console.log("input.innerHTML = " + input.innerHTML);
+        console.log("input.value = " + input.value);
         alert("Please check the formula \nThis formula can't be calculated.");
     }
 });
 
 clear.addEventListener('click', function () {
-    input.innerHTML = "";
+    input.value = "";
     result.innerHTML = "";
     leftInput = "";
     rightInput = "";
-    console.log("clear : input.innerHTML = " + input.innerHTML);
+    inputFocus();
+    console.log("clear : input.value = " + input.value);
 });
 
 copyApaste.addEventListener('click', function () {
@@ -116,14 +132,17 @@ copyApaste.addEventListener('click', function () {
         console.log("window.getSelection : txt = " + txt);
 
         if (txt.toString() == "" || txt.toString() == copyString) {
-            input.innerHTML = input.innerHTML + "" + copyString;
+            leftInput += copyString;
+            input.value = leftInput + rightInput;
 
             calculateResult();
-            console.log("paste : input.innerHTML = " + input.innerHTML);
+            inputFocus();
+            console.log("paste : input.value = " + input.value);
         }
         else {
             copyString = txt.toString();
 
+            inputFocus();
             console.log("copy : copyString = " + copyString);
         }
     } 
@@ -133,20 +152,42 @@ copyApaste.addEventListener('click', function () {
 });
 
 backSpace.addEventListener('click', function () {
-    leftInput = leftInput.substr(0, leftInput.length - 1);
-    input.innerHTML = leftInput + rightInput;
+    let check = true;
+    for (let i = 0; i < backSpaceList.length; i++)
+    {
+        let checkMatch = leftInput.match(backSpaceList[i]);
+        if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString())
+        {
+            console.log('match : ' + backSpaceList[i]);
+            leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
+            check = false;
+            break;
+        }
+    }
+    if(check)
+    {
+        let checkMatch = leftInput.match('𝜋');
+        if (checkMatch != null && checkMatch.index == (leftInput.length - 2).toString())
+            leftInput = leftInput.substr(0, leftInput.length - 2);
+        else
+            leftInput = leftInput.substr(0, leftInput.length - 1);
+    }
+    input.value = leftInput + rightInput;
 
     calculateResult();
-    console.log("backSpace input.innerHTML : " + input.innerHTML);
+    inputFocus();
+    console.log("backSpace input.value : " + input.value);
 });
 cursorLeft.addEventListener('click', function () {
     rightInput = leftInput.substr(leftInput.length - 1, 1) + rightInput;
     leftInput = leftInput.substr(0, leftInput.length - 1);
-    input.innerHTML = leftInput + rightInput;
+    input.value = leftInput + rightInput;
+    inputFocus();
 });
 
 cursorRight.addEventListener('click', function () {
     leftInput = leftInput + rightInput.substr(0, 1);
     rightInput = rightInput.substr(1, rightInput.length - 1);
-    input.innerHTML = leftInput + rightInput;
+    input.value = leftInput + rightInput;
+    inputFocus();
 });

@@ -22,7 +22,7 @@
    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
    <style>
       body{
-         margin : 0px;s
+         margin : 0px;
       }
       input, button{
          width:100px;
@@ -42,13 +42,16 @@
          text-align: right;
          font-size: 30px;
       }
+      .btn{
+            font-size: 20px;
+        }
    </style>
 </head>
 <body>
    <table style="margin: auto;">
       <tr>
          <td colspan="5">
-            <div type="text" id="input" class="IO" style="width:500; height:50px;"></div>
+            <div type="text" id="input" class="IO" style="width:500px; height:50px; max-width: 500px;max-height: 50px; overflow: auto;"></div>
          </td>
       </tr>
 
@@ -63,8 +66,6 @@
             </button>
          </td>
       </tr>
-      
-   
       <tr>
          <td >
             <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#triFunction">
@@ -128,8 +129,8 @@
          <td><input type="button" class="btn btn-dark btn-sm number" value="7"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="8"></td>
          <td><input type="button" class="btn btn-dark btn-sm number" value="9"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="*"></td>
-         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="/"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="&times;"></td>
+         <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="&#247;"></td>
       </tr>
       <tr>
          <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="."></td>
@@ -162,6 +163,21 @@
                         <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="tan">
                      </td>
                   </tr>
+                  <br>
+                  <tr>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                           style="background-color: skyblue;" value="sinh">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                           style="background-color: skyblue;" value="cosh">
+                     </td>
+                     <td>
+                        <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                           style="background-color: skyblue;" value="tanh">
+                     </td>
+                  </tr>
                </tabel>
             </div>
          </div>
@@ -175,13 +191,13 @@
                <table>
                      <tr>
                         <td>
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="ln">
+                        </td>
+                        <td>
                            <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log">
                         </td>
                         <td>
-                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log10">
-                        </td>
-                        <td>
-                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="log2">
+                           <input type="button" class="btn btn-default specialOperation" data-dismiss="modal" style="background-color: skyblue;" value="lg">
                         </td>
                      </tr>
                      <tr>
@@ -306,14 +322,3 @@
 </body>
 <script src="p1.js"></script>
 </html>
-
- 
-<!--
-   파이 &#8719
-   마이너스 &#8722
-   곱하기 &#8727 
-   루트 표시 &radic; 
-   나누기 &#247;
-   > &#62
-   < &#60
--->

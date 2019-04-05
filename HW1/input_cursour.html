@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>input cursor position test</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+</head>
+
+<body>
+    <input type="text" value="1234567890" id="test">
+
+    <input type="button" value="위치해라" id="btn" />
+
+    <input type="text" id="test-input" value="Example" />
+    <br>
+    <button type="button" id="test-button" value="Example">dsadasdasdasd</button>
+    <script>
+        var btn = document.getElementById('btn');
+        var test = document.getElementById('test');
+
+        btn.addEventListener('click', function(){
+            test.focus();
+            test.setSelectionRange(test.value.length - 4, test.value.length - 4);
+            //test.select();
+            //let range = btn.createTextRange();
+
+            console.log('btn.createTextRange');
+        
+        });
+            function setCaretPosition(ctrl, pos) {
+                // Modern browsers
+                if (ctrl.setSelectionRange) {
+                    ctrl.focus();
+                    ctrl.setSelectionRange(pos - 4, pos - 4);
+                    // IE8 and below
+                }
+            }
+
+            // Set the cursor position of the "#test-input" element to the end when the page loads
+            var input = document.getElementById('test-input');
+
+            setCaretPosition(input, input.value.length);
+    </script>
+</body>
+
+</html>
