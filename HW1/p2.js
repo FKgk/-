@@ -109,14 +109,13 @@ enter.addEventListener('click', function () {
         }
         if(check)
             result.value = answer;
-
         inputFocus();
         console.log("enter : result.value = " + result.value);
     }
     catch (ex) {
         console.log("enter Error : " + ex.message);
         console.log("input.value = " + input.value);
-        result.value="This formula can't be calculated.";
+        result.value="This can't be calculated.";
     }
 });
 
