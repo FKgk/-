@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HCI calculator_subin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <!-- <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.css"> -->
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+
+    <style>
+        /*헤더*/
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            background: rgb(252, 210, 217);
+            padding: 20px;
+        }
+
+        header h1 {
+            display: inline-block;
+            margin: 0;
+            float: left;
+        }
+
+        header h1 a:first-child {
+            display: inline-block;
+            width: 41px;
+            height: 41px;
+            background: url(./icon/calculator.png) no-repeat 0 0/41px auto;
+            vertical-align: middle;
+
+        }
+
+        header h1 a:last-child {
+            display: inline-block;
+            font-size: 24px;
+            color: white;
+            padding: 0 0 0 8px;
+            line-height: 41px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+
+        header a {
+            vertical-align: middle;
+            margin: 1%;
+        }
+
+        header .help {
+            margin: 0;
+            display: inline-block;
+            /*높이가 안들어가기 때문에, inline block을 해주어야함.*/
+            float: right;
+            width: 35px;
+            height: 35px;
+            vertical-align: middle;
+            background: url(./icon/info.png) no-repeat center/32px auto;
+        }
+
+        header nav {
+            clear: both;
+            padding: 0 10px;
+        }
+
+        header .title {
+            /*음 이걸 어떻게 해야하지..*/
+            height: 4rem;
+            border-bottom: 1px solid white;
+
+        }
+
+        .hide {
+            line-height: 0;
+            font-size: 0px;
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .title h1 a {
+            margin: 0 10px;
+            display: inline-block;
+            /*높이가 안들어가기 때문에, inline block을 해주어야함.*/
+            float: left;
+            width: 35px;
+            height: 35px;
+            vertical-align: middle;
+        }
+
+        header nav ul {
+            margin: 0.5px;
+            padding: 0 10px;
+            text-align: justify;
+            text-align-last: justify;
+        }
+
+        header nav li {
+            display: inline-block;
+        }
+
+        nav li>a {
+            /* display:inline-block; */
+            padding: 5% 100%;
+            color: rgb(196, 196, 196);
+            width: 100%;
+            border: 1px solid white;
+        }
+    </style>
+
+    <style>
+        /*계산기*/
+        .calculator {
+            background-color: rgb(175, 175, 175);
+            width: 220px;
+            border-radius: 10px;
+            margin: 10px auto;
+            padding: 15px;
+        }
+
+        .calculator .view {
+            background-color: black;
+            height: 40px;
+        }
+
+        .calculator .keys {
+            text-align: center;
+            vertical-align: middle;
+            background-color: white;
+            display: inline-block;
+            margin: 0 0 20px 0;
+            padding: 0px;
+            width: 100%;
+            height: 280px;
+        }
+
+        .key {
+            display: inline-block;
+            width: 18%;
+            background-color: rgb(255, 253, 148);
+        }
+
+        .controller {
+            height: 100px;
+            background: rgb(255, 182, 155);
+            margin-top: 17px;
+            border-radius: 3px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .controller a,
+        button {
+            border: 1px solid gray;
+            margin: 5px;
+            width: 12%;
+            height: 35px;
+            color: rgb(54, 14, 65);
+            background-color: #f2fa87;
+            border-radius: 4px;
+            text-align: center;
+            padding: 6px;
+            /*글씨를 세로축 가운데 정렬하기 위한 패딩*/
+            cursor: pointer;
+            /*해당요소에 마우스를 올리면 커서가 변한다.*/
+        }
+
+        .controller a {
+            height: 25px;
+        }
+
+        .controller a:hover,
+        button:hover {
+            background-color: rgb(248, 193, 42);
+            transform: translateY(1px);
+        }
+
+        #result {
+            background-color: rgb(231, 229, 229);
+            height: 60px;
+            color: white;
+            overflow: auto;
+        }
+
+        #latex {
+            background-color: black;
+            opacity: 0.5;
+            color: white;
+            margin-top: 10px;
+            border-radius: 5px;
+
+        }
+    </style>
+
+    <style>
+        /*팝업창 스타일*/
+        .btn {
+            display: block;
+            width: 200px;
+            height: 50px;
+            background: rgb(231, 161, 161);
+            text-decoration: none;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            border-radius: 50px;
+        }
+
+        .popup {
+            width: 500px;
+            height: 500px;
+            background-color: bisque;
+            box-shadow: 0px 0px 10px gray;
+            opacity: 0;
+            transition: all 0.5s;
+            z-index: -1;
+        }
+
+        .popup:target {
+            opacity: 1;
+            z-index: 2;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <header>
+        <div class="title">
+            <h1>
+                <a href="#a"><span class="hide">계산기</span></a>
+                <a href="#a">cal2</a>
+            </h1>
+            <a href="#a" class="help"><span class="hide">도움말</span></a>
+        </div>
+        <!-- <nav>
+            <ul>
+                <li><a href="#pop1" class="openPopup">1</a></li>
+                <li><a href="#a">2</a></li>
+                <li><a href="#a">3</a></li>
+                <li><a href="#a">4</a></li>
+            </ul>
+        </nav> -->
+    </header>
+    <main>
+        <section class="calculator">
+            <div class="view" id="result"></div>
+            <div class="view" id="latex"></div>
+            <div class="controller">
+                <a href="#pop1" class="key">f1</a>
+
+                <a href="#pop1" class="key">f2</a>
+                <a href="#pop1" class="key">f3</a>
+                <a href="#pop1" class="key">f4</a>
+                <a href="#pop1" class="key">f5</a>
+                <a href="#pop1" class="key">f6</a>
+                <a href="#pop1" class="key">f7</a>
+                <a href="#pop1" class="key">f8</a>
+            </div>
+
+            <div class="keys">
+                <button class="key">1</button>
+                <button class="key">2</button>
+                <button class="key">3</button>
+                <button class="key clear-key">CL</button>
+
+
+                <button class="key">4</button>
+                <button class="key">5</button>
+                <button class="key">6</button>
+                <button class="key">
+                    <-</button> <button class="key">7
+                </button>
+                <button class="key">8</button>
+                <button class="key">9</button>
+                <button class="key">+</button>
+
+                <button class="key"> </button>
+                <button class="key">0</button>
+                <button class="key eval-key">EV</button>
+                <button class="key">-</button>
+
+                <button class="key"> </button>
+                <button class="key"> </button>
+                <button class="key"> </button>
+
+
+                <button class="key">*</button>
+                <button class="key" id="copy">복</button>
+                <button class="key" id=paste>붙</button>
+                <button class="key">hst</button>
+                <button class="key">/</button>
+            </div>
+        </section>
+
+        <a href="#pop1" class="btn">팝업열기</a>
+        <div class="popup" id="pop1">
+            <a href="#a">닫기</a>
+
+
+    </main>
+
+    <!-- <footer>
+        <a href="#a">1</a>
+        <a href="#a">2</a>
+        <a href="#a">3</a>
+        <a href="#a">4</a>
+        &copy;Kimyo corp.
+    </footer> -->
+    <script>
+        $(document).ready(function () {
+            $("body").click(function (event) {
+                $("#result").html("무엇을 클릭 했을까요? " + event.target.nodeName);
+            })
+            $('.btn').click(function () {
+                alert("자바스크립트가 안돼 ㅠㅠ");
+            })
+
+            var parser = math.parser();
+            var displayValue = "0";
+            var copy = ""
+            var tmp = "";
+            var finCopy = ""
+            $('#result').text(displayValue);
+
+            //getSelection
+            function selectText() {
+                var selectionText = "";
+                if (document.getSelection) {
+                    selectionText = document.getSelection();
+                } else if (document.selection) {
+                    selectionText = document.selection.createRange().text;
+                }
+                return selectionText;
+            }
+
+
+            $('.key').each(function () {
+                $(this).click(function () {
+                    if ($(this).text() == 'EV') {
+                        displayValue = parser.eval(displayValue).toString();
+                        console.log(displayValue);
+                        // alert("EV가 눌렸습니다.");
+                        $('#latex').text(displayValue);
+                    }
+                    else if ($(this).text() == 'CL') {
+                        displayValue = '0';
+                        $('#result').text(displayValue);
+                        $('#latex').text(tmp);
+                    }
+                    else if ($(this).text() == 'hst') {
+                        alert("hst");
+                    }
+                    else if ($(this).text() == '<-') {
+                        let tmp = "";
+                        for (let i = 0; i < displayValue.length - 1; i++) {
+                            tmp += displayValue[i];
+                        }
+                        displayValue = tmp;
+                        $('#result').text(displayValue);
+                        //이걸 누르면 글자가 하나가 사라짐
+                    }
+                    else if ($(this).text() == '복') {
+                        let txt = selectText();
+                        console.log(txt);
+                        if (window.getSelection) {
+                            console.log(window.getSelection());
+                            txt = window.getSelection();
+                            if (txt.toString() != "")
+                                copy = txt.toString();
+                            else
+                                alert('empty txt');
+                            console.log("copy complete");
+                        }
+                    }
+                    else if ($(this).text() == '붙') {
+                        console.log("paste run");
+                        displayValue = displayValue + copy;
+                        console.log(displayValue);
+                        $('#result').text(displayValue);
+                    }
+                    else {
+                        if (displayValue[0] == '0')
+                            displayValue = "";
+                        // alert("숫자 키가 눌렸습니다.");
+                        displayValue = displayValue + $(this).text();
+                        $('#result').text(displayValue);
+                    }
+                })
+            })
+        })
+
+    </script>
+</body>
+
+</html>

@@ -15,7 +15,8 @@ var cursorLeft = document.getElementById('cursorLeft');
 var cursorRight = document.getElementById('cursorRight');
 var calFormula = math.parser();
 var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', 'exp', '√', 'det', 'cross', 'dot', 'inv'];
-
+var shapes = document.getElementsByClassName('shape');
+var createMatrix = document.getElementById('createMatrix');
 
 function getReplaceInput(){
     let t = input.value
@@ -191,3 +192,47 @@ cursorRight.addEventListener('click', function () {
     input.value = leftInput + rightInput;
     inputFocus();
 });
+
+createMatrix.addEventListener('click', function(){
+    let n = [];
+    let matrix = "";
+    for(let i = 0; i < 2; i++)
+    {
+        n[i] = shapes[i].options[shapes[i].selectedIndex].value;
+    }
+
+    let mat = "[";  
+    for(let i = 0; i < n[1] - 1; i++)
+        mat += ",";
+    mat += "]";
+
+    if(n[0] == 1)
+    {
+        leftInput += mat.substr(0, 1);
+        rightInput = mat.substr(1, mat.length - 1) + rightInput;
+        input.value = leftInput + rightInput;
+        inputFocus();
+    }
+    else
+    {
+        matrix += "[";
+        for (let i = 0; i < n[0]; i++) {
+            if (i > 0)
+                matrix += ",";
+            matrix += mat;
+        }
+        matrix += "]";
+        
+        leftInput += matrix.substr(0, 2);
+        rightInput = matrix.substr(2, matrix.length - 2) + rightInput;
+        input.value = leftInput + rightInput;
+        inputFocus();
+    }
+    
+});
+/* 
+1 * n [,,,]
+2 * n [[,,,],[,,,]]
+3 * n [[,,,],[,,,],[,,,]]
+4 * n [[,,,],[,,,],[,,,],[,,,]]
+*/

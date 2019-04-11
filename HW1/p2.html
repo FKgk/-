@@ -161,10 +161,12 @@
             <td><input type="button" class="btn btn-dark btn-sm" id="enter" value="EN"></td>
             <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="%"></td>
         </tr>
-        <tr>
+        <td>
             <td><input type="button" class="btn btn-dark btn-sm" id="cursorLeft" value="&lt;"></td>
             <td><input type="button" class="btn btn-dark btn-sm" id="cursorRight" value=">"></td>
-        </tr>
+            <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#matrix">
+                Matrix
+            </button></td>
     </table>
 
 
@@ -348,6 +350,40 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="matrix" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:100px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="text-align: center;">
+                <h4 class="modal-title" id="myModalLabel">n × m 행렬 생성</h4>
+                
+                <table>
+                    <td>n : 
+                        <select class="shape" name="Matrixn">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                    
+                    <td>
+                        m : 
+                        <select class="shape" name="Matrixm">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </table>
+                
+                    <input type="button" class="btn btn-default btn-sm" id="createMatrix" style="background-color: skyblue;"
+                    data-dismiss="modal" value="생성">
             </div>
         </div>
     </div>
