@@ -18,29 +18,30 @@ var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', '
 var shapes = document.getElementsByClassName('shape');
 var createMatrix = document.getElementById('createMatrix');
 
-function getReplaceInput(){
+
+function getReplaceInput() {
     let t = input.value
-    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10');
+    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10').replace('<sup>2</sup>','^2');
 }
 
-function inputFocus(){
+function inputFocus() {
     input.focus();
     input.setSelectionRange(leftInput.length, leftInput.length);
 }
-function calculateResult(){
-    try{
+function calculateResult() {
+    try {
         console.log("input.value: " + input.value);
         let replaceInput = getReplaceInput();
         let tmp = calFormula.eval(replaceInput).toString();
-        if(tmp.split(" ")[0] != "function")
-            result.innerHTML = tmp;
+        if (tmp.split(" ")[0] != "function")
+            result.value = tmp;
     }
-    catch(e){
+    catch (e) {
         console.log('계산할 수 없는 수식이므로 작동하지 않는다.');
     }
-    finally{
-        if(input.value == "")
-            result.innerHTML = "";
+    finally {
+        if (input.value == "")
+            result.value = "";
     }
 
 }
@@ -64,7 +65,7 @@ for (let i = 0; i < normalOperations.length; i++) {
     });
 }
 for (let i = 0; i < specialOperations.length; i++) {
-    specialOperations[i].addEventListener('click', function(){
+    specialOperations[i].addEventListener('click', function () {
         leftInput += specialOperations[i].value + "(";
         input.value = leftInput + rightInput;
         calculateResult();
@@ -74,30 +75,29 @@ for (let i = 0; i < specialOperations.length; i++) {
 }
 
 enter.addEventListener('click', function () {
-    try{
+    try {
         let replaceInput = getReplaceInput();
         let answer = calFormula.eval(replaceInput).toString();
-        
-        if(answer.split(' ')[0] == 'function'){
+
+        if (answer.split(' ')[0] == 'function') {
             console.log(answer);
             answer = answer.split(' ')[0];
-            historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.innerHTML = '" + answer + "'\">" + input.value + "</button></tr>";
-            result.innerHTML = rightInput = leftInput = "";
-            
-        }
-        else{
-            try {
-                let value ="";
-                if (input.value.match('=') && 
-                    (!input.value.match('!=') && !input.value.match('>=') && !input.value.match('<=')))
-                    {
-                        value = input.value.replace('=', ' = ');
-                    }
-                    else{
-                        value = input.value + " &#61; " + answer.toString();
-                    }
+            historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.value = '" + answer + "'\">" + input.value + "</button></tr>";
+            result.value = rightInput = leftInput = "";
 
-                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.innerHTML = '" + answer + "'\">" + value + "</button></tr>";
+        }
+        else {
+            try {
+                let value = "";
+                if (input.value.match('=') &&
+                    (!input.value.match('!=') && !input.value.match('>=') && !input.value.match('<='))) {
+                    value = input.value.replace('=', ' = ');
+                }
+                else {
+                    value = input.value + " &#61; " + answer.toString();
+                }
+
+                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.value = '" + answer + "'\">" + value + "</button></tr>";
             }
             catch (ex) {
                 console.log("enter Error : " + ex.message);
@@ -105,21 +105,21 @@ enter.addEventListener('click', function () {
                 alert("history saved Error");
             }
         }
-        result.innerHTML = answer;
-        
+        result.value = answer;
+
         inputFocus();
-        console.log("enter : result.value = " + result.innerHTML);
+        console.log("enter : result.value = " + result.value);
     }
-    catch(ex){
+    catch (ex) {
         console.log("enter Error : " + ex.message);
         console.log("input.value = " + input.value);
-        alert("Please check the formula \nThis formula can't be calculated.");
+        result.value="Please check the formula \nThis formula can't be calculated.";
     }
 });
 
 clear.addEventListener('click', function () {
     input.value = "";
-    result.innerHTML = "";
+    result.value = "";
     leftInput = "";
     rightInput = "";
     inputFocus();
@@ -146,29 +146,26 @@ copyApaste.addEventListener('click', function () {
             inputFocus();
             console.log("copy : copyString = " + copyString);
         }
-    } 
+    }
     else {
-    console.log("copyApaste Error wrong detection windo.getSelection == false");
-    }    
+        console.log("copyApaste Error wrong detection windo.getSelection == false");
+    }
 });
 
 backSpace.addEventListener('click', function () {
     let check = true;
-    for (let i = 0; i < backSpaceList.length; i++)
-    {
+    for (let i = 0; i < backSpaceList.length; i++) {
         let checkMatch = leftInput.match(backSpaceList[i]);
-        if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString())
-        {
+        if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString()) {
             console.log('match : ' + backSpaceList[i]);
             leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
             check = false;
             break;
         }
     }
-    if(check)
-    {
-        let checkMatch = leftInput.match('𝜋');
-        if (checkMatch != null && checkMatch.index == (leftInput.length - 2).toString())
+    if (check) {
+        let piCheck = leftInput.match('𝜋'), supCheck = leftInput.match('<sup>2</sup>');
+        if (piCheck != null && piCheck.index == (leftInput.length - 2).toString())
             leftInput = leftInput.substr(0, leftInput.length - 2);
         else
             leftInput = leftInput.substr(0, leftInput.length - 1);
@@ -193,28 +190,25 @@ cursorRight.addEventListener('click', function () {
     inputFocus();
 });
 
-createMatrix.addEventListener('click', function(){
+createMatrix.addEventListener('click', function () {
     let n = [];
     let matrix = "";
-    for(let i = 0; i < 2; i++)
-    {
+    for (let i = 0; i < 2; i++) {
         n[i] = shapes[i].options[shapes[i].selectedIndex].value;
     }
 
-    let mat = "[";  
-    for(let i = 0; i < n[1] - 1; i++)
+    let mat = "[";
+    for (let i = 0; i < n[1] - 1; i++)
         mat += ",";
     mat += "]";
 
-    if(n[0] == 1)
-    {
+    if (n[0] == 1) {
         leftInput += mat.substr(0, 1);
         rightInput = mat.substr(1, mat.length - 1) + rightInput;
         input.value = leftInput + rightInput;
         inputFocus();
     }
-    else
-    {
+    else {
         matrix += "[";
         for (let i = 0; i < n[0]; i++) {
             if (i > 0)
@@ -222,17 +216,11 @@ createMatrix.addEventListener('click', function(){
             matrix += mat;
         }
         matrix += "]";
-        
+
         leftInput += matrix.substr(0, 2);
         rightInput = matrix.substr(2, matrix.length - 2) + rightInput;
         input.value = leftInput + rightInput;
         inputFocus();
     }
-    
 });
-/* 
-1 * n [,,,]
-2 * n [[,,,],[,,,]]
-3 * n [[,,,],[,,,],[,,,]]
-4 * n [[,,,],[,,,],[,,,],[,,,]]
-*/
+
