@@ -78,6 +78,7 @@ enter.addEventListener('click', function () {
     try {
         let replaceInput = getReplaceInput();
         let answer = calFormula.eval(replaceInput).toString();
+        let check = true;
 
         if (answer.split(' ')[0] == 'function') {
             console.log(answer);
@@ -102,10 +103,12 @@ enter.addEventListener('click', function () {
             catch (ex) {
                 console.log("enter Error : " + ex.message);
                 console.log(historyList.innerHTML);
-                alert("history saved Error");
+                result.value = "history saved Error";
+                check = false;
             }
         }
-        result.value = answer;
+        if(check)
+            result.value = answer;
 
         inputFocus();
         console.log("enter : result.value = " + result.value);
@@ -113,7 +116,7 @@ enter.addEventListener('click', function () {
     catch (ex) {
         console.log("enter Error : " + ex.message);
         console.log("input.value = " + input.value);
-        result.value="Please check the formula \nThis formula can't be calculated.";
+        result.value="This formula can't be calculated.";
     }
 });
 
