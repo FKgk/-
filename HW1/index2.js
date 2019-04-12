@@ -11,7 +11,7 @@ var normalOperations = document.getElementsByClassName('normalOperation');
 var specialOperations = document.getElementsByClassName('specialOperation');
 var cursorLeft = document.getElementById('cursorLeft');
 var cursorRight = document.getElementById('cursorRight');
-var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv', 'e^'];
+var backSpaceList = ['arcsin','arccos','arctan','arcsinh','arccosh','arctanh','sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv', 'e^'];
 var shapes = document.getElementsByClassName('shape');
 var createMatrix = document.getElementById('createMatrix');
 var exponential = document.getElementById('exponential');
@@ -30,9 +30,9 @@ function getReplaceInput() {
 
 function inputFocus() {
     input.focus();
-    
     input.setSelectionRange(leftInput.length, leftInput.length);
 }
+
 function calculateResult() {
     try {
         console.log("input.value: " + input.value);
@@ -48,7 +48,6 @@ function calculateResult() {
         if (input.value == "")
             result.value = "";
     }
-
 }
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener('click', function () {
@@ -69,6 +68,7 @@ for (let i = 0; i < normalOperations.length; i++) {
         console.log("normalOperations[" + i + "] '" + normalOperations[i].value + "' : input.value = " + input.value);
     });
 }
+
 for (let i = 0; i < specialOperations.length; i++) {
     specialOperations[i].addEventListener('click', function () {
         leftInput += specialOperations[i].value + "(";
@@ -127,10 +127,7 @@ enter.addEventListener('click', function () {
 });
 
 clear.addEventListener('click', function () {
-    input.value = "";
-    result.value = "";
-    leftInput = "";
-    rightInput = "";
+    input.value = result.value = leftInput = rightInput = "";
     inputFocus();
     console.log("clear : input.value = " + input.value);
 });
@@ -157,7 +154,7 @@ copyApaste.addEventListener('click', function () {
         }
     }
     else {
-        console.log("copyApaste Error wrong detection windo.getSelection == false");
+        console.log("copyApaste Error wrong detection window.getSelection == false");
     }
 });
 
@@ -166,24 +163,18 @@ backSpace.addEventListener('click', function () {
     for (let i = 0; i < backSpaceList.length; i++) {
         let checkMatch = leftInput.match(backSpaceList[i]);
         if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString()) {
-
-            if(leftInput.substr(leftInput.length - 1, 1) == "(")
-            {
+            if(leftInput.substr(leftInput.length - 1, 1) == "(") {
                 console.log('match : ' + backSpaceList[i]);
                 leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
-
-                if (rightInput.substr(0, 1) == ")") {
+                if (rightInput.substr(0, 1) == ")")
                     rightInput = rightInput.substr(1, rightInput.length - 1);
-                }
 
                 check = false;
                 break;
             }
         }
-        else if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 2).toString())
-        {
-            if (leftInput.substr(leftInput.length - 2, 2) == "()")
-            {
+        else if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 2).toString()) {
+            if (leftInput.substr(leftInput.length - 2, 2) == "()") {
                 console.log('match : ' + backSpaceList[i]);
                 leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 2);
 
@@ -211,7 +202,6 @@ cursorLeft.addEventListener('click', function () {
     input.value = leftInput + rightInput;
     inputFocus();
 });
-
 cursorRight.addEventListener('click', function () {
     leftInput = leftInput + rightInput.substr(0, 1);
     rightInput = rightInput.substr(1, rightInput.length - 1);
@@ -258,14 +248,12 @@ exponential.addEventListener('click', function(){
     rightInput = ")^2"+ rightInput;
     input.value = leftInput + rightInput;
 
-    calculateResult();
     inputFocus();
 });
 
 fraction.addEventListener('click', function () {
    leftInput += "1/(";
    rightInput = ")" + rightInput;
-
    input.value = leftInput + rightInput;
     
     inputFocus();
@@ -289,4 +277,5 @@ input.addEventListener('click', function () {
         rightInput = input.value.substr(a);
     }
 });
+
 console.log(window.innerWidth, window.innerHeight);
