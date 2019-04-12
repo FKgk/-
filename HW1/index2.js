@@ -11,10 +11,12 @@ var normalOperations = document.getElementsByClassName('normalOperation');
 var specialOperations = document.getElementsByClassName('specialOperation');
 var cursorLeft = document.getElementById('cursorLeft');
 var cursorRight = document.getElementById('cursorRight');
-var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv'];
+var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv', 'e^'];
 var shapes = document.getElementsByClassName('shape');
 var createMatrix = document.getElementById('createMatrix');
-var eExponential = document.getElementsByClassName('eExponential')[0];
+var exponential = document.getElementById('exponential');
+var fraction = document.getElementById('fraction');
+var eExponential = document.getElementById('eExponential');
 
 var copyString = "";
 var leftInput = "", rightInput = "";
@@ -22,7 +24,7 @@ var calFormula = math.parser();
 
 function getReplaceInput() {
     let t = input.value
-    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10').replace('<sup>2</sup>','^2');
+    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10');
 }
 
 function inputFocus() {
@@ -68,6 +70,7 @@ for (let i = 0; i < normalOperations.length; i++) {
 for (let i = 0; i < specialOperations.length; i++) {
     specialOperations[i].addEventListener('click', function () {
         leftInput += specialOperations[i].value + "(";
+        rightInput = ")" + rightInput;
         input.value = leftInput + rightInput;
         calculateResult();
         inputFocus();
@@ -167,7 +170,7 @@ backSpace.addEventListener('click', function () {
         }
     }
     if (check) {
-        let piCheck = leftInput.match('𝜋'), supCheck = leftInput.match('<sup>2</sup>');
+        let piCheck = leftInput.match('𝜋');
         if (piCheck != null && piCheck.index == (leftInput.length - 2).toString())
             leftInput = leftInput.substr(0, leftInput.length - 2);
         else
@@ -227,10 +230,29 @@ createMatrix.addEventListener('click', function () {
     }
 });
 
-eExponential.addEventListener('click', function(){
-    leftInput += "e^";
+exponential.addEventListener('click', function(){
+    leftInput += "^2";
+    rightInput = rightInput;
     input.value = leftInput + rightInput;
 
     calculateResult();
     inputFocus();
 });
+
+fraction.addEventListener('click', function () {
+   leftInput += "1/(";
+   rightInput = ")" + rightInput;
+
+   input.value = leftInput + rightInput;
+    
+    inputFocus();
+});
+
+eExponential.addEventListener('click', function () {
+    leftInput += "e^(";
+    rightInput = ")" + rightInput;
+
+    input.value = leftInput + rightInput;
+
+    inputFocus();
+})

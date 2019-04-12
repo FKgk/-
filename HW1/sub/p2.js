@@ -9,16 +9,15 @@ var historyList = document.getElementById('history-tablelist');
 var numbers = document.getElementsByClassName('number');
 var normalOperations = document.getElementsByClassName('normalOperation');
 var specialOperations = document.getElementsByClassName('specialOperation');
-var cursorLeft = document.getElementById('cursorLeft');
-var cursorRight = document.getElementById('cursorRight');
-var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv'];
-var shapes = document.getElementsByClassName('shape');
-var createMatrix = document.getElementById('createMatrix');
-var eExponential = document.getElementsByClassName('eExponential')[0];
-
 var copyString = "";
 var leftInput = "", rightInput = "";
+var cursorLeft = document.getElementById('cursorLeft');
+var cursorRight = document.getElementById('cursorRight');
 var calFormula = math.parser();
+var backSpaceList = ['sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', 'exp', '√', 'det', 'cross', 'dot', 'inv'];
+var shapes = document.getElementsByClassName('shape');
+var createMatrix = document.getElementById('createMatrix');
+
 
 function getReplaceInput() {
     let t = input.value
@@ -227,10 +226,3 @@ createMatrix.addEventListener('click', function () {
     }
 });
 
-eExponential.addEventListener('click', function(){
-    leftInput += "e^";
-    input.value = leftInput + rightInput;
-
-    calculateResult();
-    inputFocus();
-});
