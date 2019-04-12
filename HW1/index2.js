@@ -22,20 +22,22 @@ var copyString = "";
 var leftInput = "", rightInput = "";
 var calFormula = math.parser();
 
+
 function getReplaceInput() {
     let t = input.value
-    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10');
+    return t.replace('𝜋', 'pi').replace('√', 'sqrt').replace('÷', '/').replace('×', '*').replace('ln', 'log').replace('lg', 'log2').replace('log', 'log10').replace('arcsin', 'asin').replace('arccos', 'acos').replace('arctan', 'atan').replace('arcsinh', 'asinh').replace('arccosh', 'acosh').replace('arctanh', 'atanh').replace('°', 'deg' );
 }
 
 function inputFocus() {
     input.focus();
+    
     input.setSelectionRange(leftInput.length, leftInput.length);
 }
 function calculateResult() {
     try {
         console.log("input.value: " + input.value);
         let replaceInput = getReplaceInput();
-        let tmp = calFormula.eval(replaceInput).toString();
+        let tmp = calFormula.eval(replaceInput).toString().replace('deg', '°');
         if (tmp.split(" ")[0] != "function")
             result.value = tmp;
     }
@@ -82,6 +84,7 @@ enter.addEventListener('click', function () {
     try {
         let replaceInput = getReplaceInput();
         let answer = calFormula.eval(replaceInput).toString();
+        answer = answer.replace('deg', '°');
         let check = true;
 
         if (answer.split(' ')[0] == 'function') {
@@ -163,10 +166,30 @@ backSpace.addEventListener('click', function () {
     for (let i = 0; i < backSpaceList.length; i++) {
         let checkMatch = leftInput.match(backSpaceList[i]);
         if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString()) {
-            console.log('match : ' + backSpaceList[i]);
-            leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
-            check = false;
-            break;
+
+            if(leftInput.substr(leftInput.length - 1, 1) == "(")
+            {
+                console.log('match : ' + backSpaceList[i]);
+                leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
+
+                if (rightInput.substr(0, 1) == ")") {
+                    rightInput = rightInput.substr(1, rightInput.length - 1);
+                }
+
+                check = false;
+                break;
+            }
+        }
+        else if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 2).toString())
+        {
+            if (leftInput.substr(leftInput.length - 2, 2) == "()")
+            {
+                console.log('match : ' + backSpaceList[i]);
+                leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 2);
+
+                check = false;
+                break;
+            }
         }
     }
     if (check) {
@@ -231,8 +254,8 @@ createMatrix.addEventListener('click', function () {
 });
 
 exponential.addEventListener('click', function(){
-    leftInput += "^2";
-    rightInput = rightInput;
+    leftInput += "(";
+    rightInput = ")^2"+ rightInput;
     input.value = leftInput + rightInput;
 
     calculateResult();
@@ -255,4 +278,15 @@ eExponential.addEventListener('click', function () {
     input.value = leftInput + rightInput;
 
     inputFocus();
-})
+});
+
+input.addEventListener('click', function () {
+    let a = input.selectionStart;
+    if (a == input.selectionEnd) {
+        input.value = leftInput + rightInput;
+
+        leftInput = input.value.substr(0, a);
+        rightInput = input.value.substr(a);
+    }
+});
+console.log(window.innerWidth, window.innerHeight);
