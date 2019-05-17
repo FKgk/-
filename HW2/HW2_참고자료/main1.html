@@ -120,25 +120,48 @@
             if(MathApp.isInCanvas(window_p))
             {
                 let canvas_p = MathApp.transformToCanvasCoords(window_p);
+                let preSelected_block = null;
 
                 if (MathApp.selected_block != null) {
+                    preSelected_block = MathApp.selected_block;
+
                     MathApp.selected_block.onDeselected();
                     MathApp.selected_block = null;
                 }
 
                 let block = MathApp.findBlockOn(canvas_p);
                 if (block != null) {
-                    MathApp.selected_block = block;
-                    MathApp.selected_block.onSelected();
+                    if (MathApp.popup_list.includes(block.name)) 
+                    {
+                        if (preSelected_block != null) 
+                        {
+                            MathApp.deletePopup();
+                            console.log("이거 사용됨 : " + block.name + " , " + preSelected_block.name);
+                            MathApp.selectPopup(preSelected_block, block);
+                            MathApp.deletePopup();
+                        }
+                    }
+                    else
+                    {
+                        MathApp.deletePopup();
+                        MathApp.createPopup(block);
+                        MathApp.selected_block = block;
+                        MathApp.selected_block.onSelected();
+                    }
                     console.log(block);
                 }
-
+                else
+                {
+                    MathApp.deletePopup();
+                }
                 MathApp.is_mouse_dragging = true;
                 MathApp.mouse_drag_prev = canvas_p;
 
                 MathApp.canvas.requestRenderAll();
             }
-            else {
+            else 
+            {
+                MathApp.deletePopup();
                 MathApp.is_mouse_dragging = false;
                 MathApp.mouse_drag_prev = { x: 0, y: 0 };
             }
@@ -149,7 +172,6 @@
             if (block == null)
                 return null;
             
-            console.log("create popup");
             for(let i = 0; i < MathApp.popup_list.length; i++)
             {
                 let size = {
@@ -173,16 +195,13 @@
             if(selected_block == null || block == null)
                 return null;
 
-            console.log("select popup");
-
             if(block.name == "start")
             {
                 console.log("select popup start");
-
-/*
                 let result = parser.eval(selected_block.name);
 
-                console.log("key press");
+                result = String(result);
+
                 let size = {
                     width: SYMBOL_WIDTH,
                     height: SYMBOL_HEIGHT
@@ -193,12 +212,17 @@
                 };
 
                 let new_symbol = new MathApp.Symbol(position, size, result[0]);
+                console.log(new_symbol);
 
                 for(let i = 1; i < result.length; i++)
                 {
-                    MathApp.assemble(new_symbol, new MathApp.Symbol(position, size, result[i]));
+                    let t = new MathApp.Symbol(position, size, result[i]);
+                    console.log(t);
+                    new_symbol = MathApp.assemble(new_symbol, t);
                 }
-*/
+                console.log("last : ");
+                console.log(new_symbol);
+
             }
             else if(block.name == "delete")
             {
@@ -281,9 +305,11 @@
         MathApp.assemble = function(block, selected_block){
             if (selected_block == null || block == null)
                 return null;
-
-            MathApp.selected_block.onDeselected();
-            MathApp.selected_block = null;
+            if(MathApp.selected_block != null)
+            {
+                MathApp.selected_block.onDeselected();
+                MathApp.selected_block = null;
+            }
 
             block.visual_items.reverse();
             selected_block.visual_items.reverse();
@@ -307,16 +333,27 @@
                     block.visual_items.push(selected_block.visual_items[i]);
                 }  
             }
-
-            block.visual_items[0].width += selected_block.size.width;
+            try{
+                block.visual_items[0].width += selected_block.size.width;
+            }
+            catch (e){
+                console.log("EERRRRRRRRROOOOOOOOOOORRRRRR");
+                console.log(e);
+                console.log(block);
+                console.log(block.visual_items);
+                console.log(block.visual_items[0]);
+                console.log(selected_block.size);
+                console.log("EEEEEEEEEEEEEENNNNNNDDDDDDDD");
+            }
             block.visual_items.reverse();
 
             block.position.x += selected_block.size.width / 2;
             block.size.width += selected_block.size.width;
             block.name += selected_block.name;
 
-            MathApp.canvas.requestRenderAll();
             selected_block.destroy();
+
+            MathApp.canvas.requestRenderAll();
 
             console.log(block);
             return block;
@@ -451,7 +488,6 @@
 
         //
         MathApp.Symbol = function(position, size, name) {
-            console.log("symbol(block) 생성");
             MathApp.Block.call(this, position, size);
             this.type = MathApp.block_types.SYMBOL;
             this.name = name;
