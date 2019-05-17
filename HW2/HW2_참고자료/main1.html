@@ -120,36 +120,17 @@
             if(MathApp.isInCanvas(window_p))
             {
                 let canvas_p = MathApp.transformToCanvasCoords(window_p);
-                let preSelected_block = null;
 
-                if( MathApp.selected_block != null )
-                {
-                    //preSelected_block = MathApp.selected_block;
+                if (MathApp.selected_block != null) {
                     MathApp.selected_block.onDeselected();
                     MathApp.selected_block = null;
                 }
 
                 let block = MathApp.findBlockOn(canvas_p);
-                if(block != null)
-                {
-                    if(MathApp.popup_list.includes(block.name))
-                    {
-                        if(preSelected_block != null)
-                        {
-                            console.log("이거 사용됨 : " + block.name);
-                            console.log("이거 사용됨 : " + preSelected_block.name);
-                            //MathApp.selectPopup(preSelected_block, block);
-                        }
-                    }
-                    else{
-                        //MathApp.deletePopup();
-                        //MathApp.createPopup(block);
-                        MathApp.selected_block = block;
-                        MathApp.selected_block.onSelected();
-                    }
-                }
-                else{
-                    //MathApp.deletePopup();
+                if (block != null) {
+                    MathApp.selected_block = block;
+                    MathApp.selected_block.onSelected();
+                    console.log(block);
                 }
 
                 MathApp.is_mouse_dragging = true;
@@ -157,11 +138,9 @@
 
                 MathApp.canvas.requestRenderAll();
             }
-            else
-            {
-                //MathApp.deletePopup();
+            else {
                 MathApp.is_mouse_dragging = false;
-                MathApp.mouse_drag_prev = {x:0, y:0};
+                MathApp.mouse_drag_prev = { x: 0, y: 0 };
             }
         }
 
@@ -195,8 +174,12 @@
                 return null;
 
             console.log("select popup");
+
             if(block.name == "start")
             {
+                console.log("select popup start");
+
+/*
                 let result = parser.eval(selected_block.name);
 
                 console.log("key press");
@@ -215,19 +198,24 @@
                 {
                     MathApp.assemble(new_symbol, new MathApp.Symbol(position, size, result[i]));
                 }
-
+*/
             }
             else if(block.name == "delete")
             {
+                console.log("select popup delete");
+
                 MathApp.deletePopup();
                 selected_block.destroy();
             }
             else if(block.name == "copy")
             {
-                MathApp.blocks.push(selected_block);
+                console.log("select popup copy");
+
+                //MathApp.blocks.push(selected_block);
             }
             else if(block.name == "separate")
             {
+                console.log("select popup separate");
 
             }
             else
@@ -269,7 +257,6 @@
         MathApp.handleMouseUp = function(window_p) {
             if(MathApp.is_mouse_dragging)
             {
-                console.log("MouseUp");
                 let canvas_p = MathApp.transformToCanvasCoords(window_p);
 
                 MathApp.is_mouse_dragging = false;
@@ -292,22 +279,35 @@
 
 // 합치는 함수
         MathApp.assemble = function(block, selected_block){
-            if (MathApp.selected_block == null || block == null)
+            if (selected_block == null || block == null)
                 return null;
-            
+
             MathApp.selected_block.onDeselected();
             MathApp.selected_block = null;
 
-            console.log(block.name + "," + selected_block.name + " 겹침");
             block.visual_items.reverse();
             selected_block.visual_items.reverse();
 
             let k = block.visual_items.length - selected_block.visual_items.length;
-            for (let i = 0; i < selected_block.visual_items.length; i++) {
-                selected_block.visual_items[i].left = block.visual_items[k + i].left + selected_block.size.width;
-                selected_block.visual_items[i].top = block.visual_items[i].top;
-                block.visual_items.push(selected_block.visual_items[i]);
+            if(k >= 0)
+            {
+                for (let i = 0; i < selected_block.visual_items.length; i++) 
+                {
+                    selected_block.visual_items[i].left = block.visual_items[k + i].left + selected_block.size.width;
+                    selected_block.visual_items[i].top = block.visual_items[i].top;
+                    block.visual_items.push(selected_block.visual_items[i]);
+                }
             }
+            else
+            {
+                for (let i = 0; i < selected_block.visual_items.length; i++) 
+                {
+                    selected_block.visual_items[i].left = block.visual_items[i].left + block.size.width;
+                    selected_block.visual_items[i].top = block.visual_items[i].top;
+                    block.visual_items.push(selected_block.visual_items[i]);
+                }  
+            }
+
             block.visual_items[0].width += selected_block.size.width;
             block.visual_items.reverse();
 
@@ -315,8 +315,8 @@
             block.size.width += selected_block.size.width;
             block.name += selected_block.name;
 
-            selected_block.destroy();
             MathApp.canvas.requestRenderAll();
+            selected_block.destroy();
 
             console.log(block);
             return block;
@@ -375,7 +375,7 @@
                 for (let i = 0; i < this.blocks.length; i++) {
                     let block = this.blocks[i];
 
-                    if (!MathApp.popup_list.includes(block.name) && block != selected_block) {
+                    if (block != selected_block) {
                         if (Math.abs(x - block.position.x) <= (block.size.width + selected_block.size.width) / 2 &&
                             Math.abs(y - block.position.y) <= (block.size.height + selected_block.size.height) / 2) {
                             return block;
