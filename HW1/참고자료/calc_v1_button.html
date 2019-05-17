@@ -1,0 +1,140 @@
+<html>
+<head>
+    <title>Ugly calculator using JQuery and math.js Version 1</title>
+
+    <style type="text/css">
+        #calculator {
+            width: 550px;
+        }
+       
+        #result {
+            width: 520px;
+            height: 35px;
+            border: 1px solid red;       
+            font: 20px digital;
+        }
+
+        .key {
+            display: inline-block;          
+            width: 45px;
+            height: 25px;
+            border: 1px solid black;       
+            font: bold 20px sans-serif;
+        }
+    </style>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' type='text/javascript'></script>  
+    <script src='math.js' type='text/javascript'></script>
+     
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var parser = math.parser();
+
+            var displayValue = '0';
+            $('#result').text(displayValue);
+ 
+            $('.key').each(function(index, key){       
+                $(this).click(function(e){
+                    if(displayValue == '0') displayValue = '';
+
+                    if($(this).text() == 'EV')
+                    {
+                        try
+                        {
+                            displayValue = parser.eval(displayValue).toString();
+                            var tokens = displayValue.split(' ');
+                            if(tokens[0] == 'function')
+                            {
+                                displayValue = tokens[0];
+                            }
+                            $('#result').text(displayValue);                         
+                            displayValue = '0';
+                        }
+                        catch (e)
+                        {
+                            displayValue = '0';
+                            if(displayValue != 'function')
+                            {
+                                $('#result').text(e);
+                            }
+                        }               
+                    }
+                    else
+                    {
+                        if($(this).text() == 'CL')
+                        {
+                            displayValue = '0';
+                            $('#result').text(displayValue);
+                        }
+                        else
+                        {                        
+                            displayValue += $(this).text();
+                            $('#result').text(displayValue);
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+ 
+<body>
+    <h1>
+            Calculator Version 1
+    </h1>   
+            
+    <div id="calculator">
+        <div id="result"></div>
+        <span class="key">1</span>
+        <span class="key">2</span>
+        <span class="key">3</span>
+        <span class="key">4</span>
+        <span class="key">5</span>
+        <span class="key">6</span>
+        <span class="key">7</span>
+        <span class="key">8</span>
+        <span class="key">9</span>
+        <span class="key">0</span>
+        <span class="key">+</span>
+        <span class="key">-</span>
+        <span class="key">*</span>
+        <span class="key">/</span>
+        <span class="key">%</span>
+        <span class="key">^</span>
+        <span class="key"><</span>
+        <span class="key">></span>
+        <span class="key"><=</span>
+        <span class="key">>=</span>
+        <span class="key">(</span>
+        <span class="key">)</span>
+        <span class="key">[</span>
+        <span class="key">]</span>
+        <span class="key">.</span>
+        <span class="key">,</span>
+        <span class="key">:</span>
+        <span class="key">;</span>
+        <span class="key">==</span>
+        <span class="key">!=</span>
+        <span class="key">i</span>
+        <span class="key">e</span>
+        <span class="key">pi</span>
+        <span class="key">w</span>
+        <span class="key">x</span>
+        <span class="key">y</span>
+        <span class="key">z</span>
+        <span class="key">f</span>
+        <span class="key">g</span>
+        <span class="key">=</span>
+        <span class="key">exp</span>
+        <span class="key">log</span>
+        <span class="key">sqrt</span>
+        <span class="key">sin</span>
+        <span class="key">cos</span>
+        <span class="key">tan</span>
+        <span class="key">cross</span>
+        <span class="key">det</span>
+        <span class="key">CL</span>
+        <span class="key">EV</span>
+    </div>
+</body>
+</html>

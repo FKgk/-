@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Ugly calculator using JQuery and math.js Version 0</title>
+ 
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' type='text/javascript'></script>
+    <script src='math.js' type='text/javascript'></script>
+      
+    <script type="text/javascript">
+        $(document).ready(function(){
+            let parser = math.parser();
+
+            let eval_func = function(e) {
+                try
+                {
+                    expression = $('#expression').val();
+                    result = parser.eval(expression).toString();
+                    let tokens = result.split(' ');
+                    if(tokens[0] == 'function')
+                    {
+                        result = tokens[0];
+                    }
+                    $('#result').val(result);
+                }
+                catch (e)
+                {
+                    if(result != 'function')
+                    {
+                        $('#result').val(e);
+                    }
+                }               
+            }
+
+            let clear_func = function(e) {
+                expression = '';
+                result = '0';
+
+                $('#expression').val(expression);
+                $('#result').val(result);
+            }
+
+            $('#enter').click(eval_func);
+            $('#expression').keypress(function(e) {
+                if(event.which == 13) {
+                    eval_func(e);
+                }
+            })
+            $('#clear').click(clear_func);
+
+            clear_func();
+        })
+    </script>
+</head>
+ 
+<body>
+    <h1>
+        Calculator Version 0
+    </h1>
+    
+    <p>
+        Input:
+        <input type="text" id="expression"></input>
+        <button id="enter">Enter</button>
+        <button id="clear">Clear</button>
+       </p>
+
+
+    <p>
+        Result:
+        <input type="text" id="result"></input>
+    </p>
+</body>
+</html>
