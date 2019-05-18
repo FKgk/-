@@ -58,6 +58,7 @@
         };
 
         MathApp.popup_list = [ "delete", "start", "separate", "copy" ];
+        MathApp.popup_block_list = [];
 
         MathApp.initialize = function() {
             for(let i=0; i <= 9; i++)
@@ -148,7 +149,10 @@
                         MathApp.selected_block = block;
                         MathApp.selected_block.onSelected();
                     }
+                    console.log("CLICK : " + block.name);
                     console.log(block);
+                    console.log(block.visual_items);
+                    console.log(block.visual_items[0]);
                 }
                 else
                 {
@@ -184,6 +188,7 @@
                 };
 
                 let new_symbol = new MathApp.Symbol(position, size, MathApp.popup_list[i]);
+                MathApp.popup_block_list.push(new_symbol);
                 //new_symbol.visual_items.splice(new_symbol.visual_items.length - 1, 1);
             }
 
@@ -212,17 +217,28 @@
                 };
 
                 let new_symbol = new MathApp.Symbol(position, size, result[0]);
+                
+                console.log("new_symbol");
                 console.log(new_symbol);
+                console.log(new_symbol.visual_items);
+                console.log(new_symbol.visual_items[0]);
+
+                let p = { x: new_symbol.position.x, y: new_symbol.position.y };
+                MathApp.handleMouseDown(p);
+                MathApp.is_mouse_dragging = false;
+
+                console.log("new_symbol");
+                console.log(new_symbol);
+                console.log(new_symbol.visual_items);
+                console.log(new_symbol.visual_items[0]);
 
                 for(let i = 1; i < result.length; i++)
                 {
                     let t = new MathApp.Symbol(position, size, result[i]);
-                    console.log(t);
                     new_symbol = MathApp.assemble(new_symbol, t);
                 }
                 console.log("last : ");
                 console.log(new_symbol);
-
             }
             else if(block.name == "delete")
             {
@@ -259,6 +275,9 @@
                     MathApp.blocks[i].destroy();
                 }
             }
+            
+            MathApp.popup_block_list = [];
+
             MathApp.canvas.requestRenderAll();
         }
 
@@ -271,6 +290,12 @@
                     let tx = canvas_p.x - MathApp.mouse_drag_prev.x;
                     let ty = canvas_p.y - MathApp.mouse_drag_prev.y;
                     MathApp.selected_block.translate({x: tx, y: ty});
+// popup이 selected_block과 함께 이동한다.
+                    for (let i = 0; i < 4; i++)
+                    {
+                        MathApp.popup_block_list[i].translate({x: tx, y:ty});
+                    }
+// 완료
                 }
                 MathApp.mouse_drag_prev = canvas_p;
 
@@ -303,8 +328,9 @@
 
 // 합치는 함수
         MathApp.assemble = function(block, selected_block){
-            if (selected_block == null || block == null)
+            if (selected_block == null || block == null || MathApp.popup_list.includes(block.name) )
                 return null;
+
             if(MathApp.selected_block != null)
             {
                 MathApp.selected_block.onDeselected();
