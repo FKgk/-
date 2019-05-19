@@ -193,7 +193,7 @@
             MathApp.canvas.requestRenderAll();
         }
         
-        MathApp.selectPopup = function (selected_block, block)
+        MathApp.selectPopup = async function (selected_block, block)
         {
             if(selected_block == null || block == null)
                 return null;
@@ -207,36 +207,29 @@
                     height: SYMBOL_HEIGHT
                 };
                 let position = {
-                    x: selected_block.position.x + 50 * (result.length - 1),
+                    x: selected_block.position.x,
                     y: selected_block.position.y + selected_block.size.height + 10
                 };
 
                 console.log(position);
                 console.log(size);
 
-                let mainBlock = new MathApp.Symbol({
-                    x: selected_block.position.x + 50 * (result.length - 1),
-                    y: selected_block.position.y + selected_block.size.height + 10
-                }, size, result[result.length - 1]);
+                let mainBlock = new MathApp.Symbol(position, size, result[0]);
                 mainBlock.name = result;
 
                 console.log("mainBlock1");
                 console.log(mainBlock);
-                for (let i = result.length - 2; i >= 0; i--)
+                for (let i = 1; i < result.length; i++)
                 {
-                    let tempPosition = {x : selected_block.position.x +  50 * i,
-                                        y : selected_block.position.y + selected_block.size.height + 10};
+                    let tempPosition = {x : position.x + 50 * i,
+                                        y : position.y};
 
-                    console.log("i : ", i, "position : ", tempPosition);
+                    console.log("i : ",i, "position : ",tempPosition);
                     MathApp.create_visual_blocks(mainBlock, tempPosition, size, result[i]);
                 }
-                let mainBlock_item_left = mainBlock.visual_items[1].left;
-                mainBlock.position.x -= 25 * (result.length - 1);
-                mainBlock.visual_items[1].left = mainBlock_item_left;
-                //mainBlock.size.width += 50 * (result.length - 1);
-                //mainBlock.visual_items[mainBlock.visual_items.length - 1].width += MathApp.SYMBOL_WIDTH * (result.length - 1);
-                
-                console.log("mainBlock");
+                mainBlock.visual_items[mainBlock.visual_items.length - 1].width += MathApp.SYMBOL_WIDTH * (result.length - 1);
+                mainBlock.position.x += (MathApp.SYMBOL_WIDTH) / 2 * (result.length - 1);
+                mainBlock.size.width += MathApp.SYMBOL_WIDTH * (result.length - 1);
                 console.log(mainBlock);
 
 
@@ -341,37 +334,24 @@
                 MathApp.selected_block.onDeselected();
                 MathApp.selected_block = null;
             }
-
-            block.visual_items.reverse();
-            selected_block.visual_items.reverse();
-
-            let k = block.visual_items.length - selected_block.visual_items.length;
-            if(k >= 0)
+            let block_last_item = block.visual_items[block.visual_items.length - 1];
+            if(block.visual_items.length > 3)
             {
-                for (let i = 0; i < selected_block.visual_items.length; i++) 
-                {
-                    selected_block.visual_items[i].left = block.visual_items[k + i].left + selected_block.size.width;
-                    selected_block.visual_items[i].top = block.visual_items[i].top;
-                    block.visual_items.push(selected_block.visual_items[i]);
-                }
-            }
-            else
-            {
-                for (let i = 0; i < selected_block.visual_items.length; i++) 
-                {
-                    selected_block.visual_items[i].left = block.visual_items[i].left + block.size.width;
-                    selected_block.visual_items[i].top = block.visual_items[i].top;
-                    block.visual_items.push(selected_block.visual_items[i]);
-                }  
-            }
-            try{
-                block.visual_items[0].width += selected_block.size.width;
-            }
-            catch (e){
-                console.log("EERRRRRRRRROOOOOOOOOOORRRRRR");
-            }
-            block.visual_items.reverse();
+                block.visual_items[block.visual_items.length - 1].left = block.visual_items[2].left + SYMBOL_WIDTH * (block.name.length - 1);
 
+                block.visual_items[block.visual_items.length - 1].width = SYMBOL_WIDTH;
+            }
+
+            for (let i = 0; i < selected_block.visual_items.length; i++) 
+            {
+                selected_block.visual_items[i].left = block.visual_items[i].left + block.size.width;
+                selected_block.visual_items[i].top = block.visual_items[i].top;
+                block.visual_items.push(selected_block.visual_items[i]);
+            }
+            
+            block.visual_items[block.visual_items.length - 1].left = block.visual_items[2].left;        
+            block.visual_items[block.visual_items.length - 1].width = block.size.width + selected_block.size.width;
+            
             block.position.x += selected_block.size.width / 2;
             block.size.width += selected_block.size.width;
             block.name += selected_block.name;

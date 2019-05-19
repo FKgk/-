@@ -203,21 +203,19 @@
                 let result = String(parser.eval(selected_block.name));
                 let blocks = [];
                 let size = {
-                    width: SYMBOL_WIDTH,
+                    width: SYMBOL_WIDTH * (result.length - 1),
                     height: SYMBOL_HEIGHT
                 };
                 let position = {
-                    x: selected_block.position.x + 50 * (result.length - 1),
+                    x: selected_block.position.x + 25 * (result.length - 1),
                     y: selected_block.position.y + selected_block.size.height + 10
                 };
-
+                let mainBlock = new MathApp.create_visual_blocks(position, size, result);
+/*
                 console.log(position);
                 console.log(size);
 
-                let mainBlock = new MathApp.Symbol({
-                    x: selected_block.position.x + 50 * (result.length - 1),
-                    y: selected_block.position.y + selected_block.size.height + 10
-                }, size, result[result.length - 1]);
+                let mainBlock = new MathApp.Symbol(position, size, result[result.length - 1]);
                 mainBlock.name = result;
 
                 console.log("mainBlock1");
@@ -228,11 +226,9 @@
                                         y : selected_block.position.y + selected_block.size.height + 10};
 
                     console.log("i : ", i, "position : ", tempPosition);
-                    MathApp.create_visual_blocks(mainBlock, tempPosition, size, result[i]);
                 }
-                let mainBlock_item_left = mainBlock.visual_items[1].left;
-                mainBlock.position.x -= 25 * (result.length - 1);
-                mainBlock.visual_items[1].left = mainBlock_item_left;
+ */              
+                //mainBlock.position.x -= 25 * (result.length - 1);
                 //mainBlock.size.width += 50 * (result.length - 1);
                 //mainBlock.visual_items[mainBlock.visual_items.length - 1].width += MathApp.SYMBOL_WIDTH * (result.length - 1);
                 
@@ -580,57 +576,63 @@
 
         MathApp.Symbol.prototype = Object.create(MathApp.Block.prototype);
         
-        MathApp.create_visual_blocks = function(block, position, size, name)
+        MathApp.create_visual_blocks = function(position, size, names)
         {
-            console.log("create visual block");
-            console.log("position : ",position);
-            let path = MathApp.symbol_paths[name] + ".jpg";
-            fabric.Image.fromURL(path, function (img) 
+            MathApp.Block.call(this, position, size);
+            this.type = MathApp.block_types.SYMBOL;
+            this.name = names;
+
+            let block = this;
+
+            for(let i = 0; i < names.length; i++)
             {
-                // (0) Background
-                let background = new fabric.Rect({
-                    left: position.x - size.width / 2,
-                    top: position.y - size.height / 2,
-                    width: size.width,
-                    height: size.height,
-                    fill: "rgba(255,255,255,1)",
-                    stroke: "rgba(0,0,0,0)",
-                    selectable: false
+                let path = MathApp.symbol_paths[names[i]] + ".jpg";
+                fabric.Image.fromURL(path, function (img) {
+                    // (0) Background
+                    let background = new fabric.Rect({
+                        left: position.x - size.width / 2 + 50 * i,
+                        top: position.y - size.height / 2,
+                        width: SYMBOL_WIDTH,
+                        height: SYMBOL_HEIGHT,
+                        fill: "rgba(255,255,255,1)",
+                        stroke: "rgba(0,0,0,0)",
+                        selectable: false
+                    });
+
+                    // (1) Image
+                    img.scaleToWidth(SYMBOL_WIDTH);
+                    img.scaleToHeight(SYMBOL_HEIGHT);
+
+                    let img_w = img.getScaledWidth();
+                    let img_h = img.getScaledHeight();
+
+                    img.set({
+                        left: position.x - img_w / 2 + 50 * i,
+                        top: position.y - img_h / 2,
+                        selectable: false
+                    });
+
+                    // (2) Boundary
+                    let boundary = new fabric.Rect({
+                        left: position.x - size.width / 2 + 50 * i,
+                        top: position.y - size.height / 2,
+                        width: SYMBOL_WIDTH,
+                        height: SYMBOL_HEIGHT,
+                        fill: "rgba(0,0,0,0)",
+                        stroke: "rgba(0,0,255,1)",
+                        strokeWidth: 5,
+                        selectable: false
+                    });
+
+                    MathApp.canvas.add(background);
+                    MathApp.canvas.add(img);
+                    MathApp.canvas.add(boundary);
+
+                    block.visual_items.push(background);
+                    block.visual_items.push(img);
+                    block.visual_items.push(boundary);
                 });
-
-                 // (1) Image
-                img.scaleToWidth(size.width);
-                img.scaleToHeight(size.height);
-
-                let img_w = img.getScaledWidth();
-                let img_h = img.getScaledHeight();
-
-                img.set({
-                    left: position.x - img_w / 2,
-                    top: position.y - img_h / 2,
-                    selectable: false
-                });
-
-                // (2) Boundary
-                let boundary = new fabric.Rect({
-                    left: position.x - size.width / 2,
-                    top: position.y - size.height / 2,
-                    width: size.width,
-                    height: size.height,
-                    fill: "rgba(0,0,0,0)",
-                    stroke: "rgba(0,0,255,1)",
-                    strokeWidth: 5,
-                    selectable: false
-                });
-
-                MathApp.canvas.add(background);
-                MathApp.canvas.add(img);
-                MathApp.canvas.add(boundary);
-
-                block.visual_items.push(background);
-                block.visual_items.push(img);
-                block.visual_items.push(boundary);
-            });
+            }
         }
 
         //
