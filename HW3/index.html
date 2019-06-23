@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  style="text-align: center">
+<html style="text-align: center">
 
 <head>
     <title>
@@ -11,7 +11,7 @@
 
     <script type="text/javascript" async
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
-        </script>
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,47 +24,729 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        input, button {
+            width: 125px;
+            height: 75px;
+        }
+
+        .modal>input,
+        .modal>button {
+            width: auto;
+            height: auto;
+        }
+
+        .history_list {
+            width: 400px;
+            text-align: center center;
+        }
+
+        .IO {
+            border: 1px groove blue;
+            background-color: bisque;
+            text-align: right;
+            font-size: 40px;
+        }
+        .btn{
+            margin:0px;
+            padding:0px;
+            font-size: 40px;
+        }
+        #first{
+            background-color: rgb(231, 203, 203);
+        }
+        .btn-outline-dark, .btn-outline-primary{
+            background-color: white;
+        }
+        .tri{
+            width: 150px;
+        }
+    </style>
 </head>
 
-<body>
-    <table class="table table-striped" style="margin:0;" id="table">
+<body style="width:100%; height: 100%;">
+    <table style="margin:0;" id="first">
         <tr>
-            <th scope="col" colspan="5">
-                <input type="text" id="formula" class="IO"
-                    style="width:638px; height:60px; max-width: 640px;max-height: 60px; overflow: scroll;"
-                    placeholder="input your formula" value="">
-                <div id='result'>result:</div>
-            </th>
-        </tr> 
-
-        <tr>
-            <td scope="row" class="formula">
-                <div class="history-formula">
-                    
-                </div>
-                <div class="history-result">
-
-                </div>
+            <td colspan="5">
+                <input type="text" id="input" class="IO"
+                    style="width:638px; height:60px; max-width: 640px;max-height: 60px; overflow: scroll;" placeholder="수식이 표시 되는 곳입니다." value="">
             </td>
         </tr>
+
+        <tr>
+            <td colspan="4">
+                <input type="text" id="result" class="IO"
+                    style="display:inline-block; width: 505px; height:60px; max-width: 505px; max-height:60px; overflow:scroll; margin-bottom:5px;" placeholder="결과가 나타나는 곳입니다." readonly>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#history"
+                    style="width:125px; height: 64px; margin:0px; padding:0px;">
+                    history
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal"
+                    data-target="#triFunction">
+                    삼각
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal"
+                    data-target="#logFunction" style="font-size: 25px;">
+                    로그&지수
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#procession">
+                    행렬
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#keyboard" style="font-size: 25px;">
+                    변수&함수
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#introduction">
+                    ?
+                </button>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <input type="button" class="btn btn-dark btn-sm number" value="i">
+            </td>
+            <td>
+                <input type="button" class="btn btn-dark btn-sm number" value="&#120587;">
+            </td>
+            <td>
+                <input type="button" class="btn btn-dark btn-sm number" value="e">
+            </td>
+            <td><input type="button" class="btn btn-dark btn-sm" id="copyApaste" value="c&amp;p"></td>
+            <td><input type="button" class="btn btn-danger btn-sm" id="clear" value="C"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width: 47%" value="(">
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width: 47%" value=")">
+            </td>
+            
+            <td>
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width: 47%" value="[">
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width: 47%" value="]">
+            </td>
+            <td><button type="buuton" class="btn btn-dark btn-sm" id="exponential">x<sup>2</sup></button></td>
+            <td><button type="buuton" class="btn btn-dark btn-sm" id="fraction">1/x</button></td>
+            <td><input type="button" class="btn btn-warning btn-sm" id="backSpace" value="CE"></td>
+        </tr>
+        
+        <tr>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="1"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="2"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="3"></td>
+            <td>
+                <input type="button" class="btn btn-dark normalOperation" value="&deg;">
+            </td>
+            <td>
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width:47%;" value="&lt;">
+                <input type="button" class="btn btn-dark btn-sm normalOperation" style="width:47%;" value="&gt;">
+            </td>            
+        </tr>
+
+        <tr>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="4"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="5"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="6"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="!"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="^"></td>
+        </tr>
+        <tr>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="7"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="8"></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="9"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="+"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="="></td>
+        </tr>
+        <tr>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="."></td>
+            <td><input type="button" class="btn btn-dark btn-sm number" value="0"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value=","></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="-"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="&times;"></td>
+        </tr>
+        <tr>
+            <td><input type="button" class="btn btn-dark btn-sm" id="cursorLeft" value="&larr;"></td>
+            <td><input type="button" class="btn btn-dark btn-sm" id="cursorRight" value="&rarr;"></td>
+            <td><input type="button" class="btn btn-success btn-sm" id="enter" value="EN"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="&#247;"></td>
+            <td><input type="button" class="btn btn-dark btn-sm normalOperation" value="%"></td>
+        </tr>
     </table>
+
+
+
+    <div class="modal fade" id="triFunction" tabindex="-1" role="dialog" aria-labelledby="trigonometric function"
+        style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="sin">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="cos">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="tan">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="sinh">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="cosh">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="tanh">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arcsin">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arccos">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arctan">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arcsinh">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arccosh">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation tri" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="arctanh">
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logFunction" tabindex="-1" role="dialog" aria-labelledby="Logarithm & exponential function"
+        style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="ln">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="log">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="lg">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="&radic;">
+                            </td>
+                            <td>
+                                <button class="btn btn-default" id="eExponential" data-dismiss="modal"
+                                    style="background-color: skyblue;">e<sup>x</sup></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="procession" tabindex="-1" role="dialog" aria-labelledby="Matrix"
+        style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="dot">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="cross">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="det">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default specialOperation" data-dismiss="modal"
+                                    style="background-color: skyblue;" value="inv">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><h4 style="text-align: center;">n &times; m 행렬 생성 </h4></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="btn btn-default btn-sm" for="MatrixN">n :</label>
+                                    <select class="shape btn btn-default btn-sm" id="MatrixN" name="Matrixn">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                    </select>
+                                
+                            </td>
+                            
+                            <td>
+                                <label class="btn btn-default btn-sm" for="Matrixm">m :</label>
+                                    <select class="shape btn btn-default btn-sm" id="Matrixm" name="Matrixm">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                    </select>
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm" id="createMatrix" style="background-color: skyblue;"
+                                    data-dismiss="modal" value="생성">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="keyboard" tabindex="-1" role="dialog" aria-labelledby="create Matrix" style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <div>
+                                    변수 :
+                                </div>
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm number alphabet"
+                                    style="background-color: skyblue;" data-dismiss="modal" value="x">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm number alphabet"
+                                    style="background-color: skyblue;" data-dismiss="modal" value="y">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm number alphabet"
+                                    style="background-color: skyblue;" data-dismiss="modal" value="z">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    함수 :
+                                </div>
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm specialOperation alphabet"
+                                    style="background-color: skyblue;" data-dismiss="modal" value="f">
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-default btn-sm specialOperation alphabet"
+                                    style="background-color: skyblue;" data-dismiss="modal" value="g">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="history" style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table id="history-tablelist">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="introduction" tabindex="-1" role="dialog" aria-labelledby="introduction"
+        style="top:50px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <h4 class="modal-title" id="myModalLabel">도움말</h4>
+                <div class="modal-body">
+                    <p>
+                       EN은 답을 계산하는 버튼입니다.
+                    </p>
+                    <p>
+                        C는 전체 삭제, CE는 한 문자 삭제를 의미합니다.
+                    </p>
+                    <p>
+                        시스템 정의 함수는 각 이름에 맞는 버튼을 클릭하면 이용할 수 있습니다. (이 함수를 지우려고 할 경우 한 번에 다 지워집니다.)
+                    </p>
+                    <p>
+                        c&p는 복사 붙여넣기 기능입니다. 드래그 된 부분을 복사하고, 드래그가 되어 있지 않거나 같은 내용이 드래그되어 있는 경우는 붙여넣기를 실행합니다.
+                    </p>
+                    <p>
+                        histroy 버튼을 누르면 기록이 뜨는 데 이 기록을 누르면 현재 수식과 결과 값이 해당 수식과 결과 값으로 변경됩니다.
+                    </p>
+                    <p>
+                        &larr; &rarr;는 커서를 옮길 수 있는 버튼입니다.
+                        (주의: 입력 부분에서 직접 커서를 지정하셔도 커서는 이 버튼을 기준으로 입력됩니다.)
+                    </p>
+                    <p>
+                        팝업창이 뜬 상태에서 버튼을 누르거나 팝업창 바깥 범위를 클릭하면 팝업창이 종료됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
-    var table=document.getElementById('table');
-    var formula=document.getElementById('formula');
-    var result=document.getElementById('result');
-    var math = math.parser();
+    window.resizeTo(460, 745);
 
-    formula.addEventListener('keyup', function (event) {
-        if(event.keyCode === 13){
-            event.preventDefault();
+    var result = document.getElementById('result');
+    var input = document.getElementById('input');
+    var enter = document.getElementById('enter');
+    var clear = document.getElementById('clear');
+    var copyApaste = document.getElementById('copyApaste');
+    var backSpace = document.getElementById('backSpace');
+    var historyList = document.getElementById('history-tablelist');
 
-            result.value=math.eval(formula.value);
+    var numbers = document.getElementsByClassName('number');
+    var normalOperations = document.getElementsByClassName('normalOperation');
+    var specialOperations = document.getElementsByClassName('specialOperation');
+    var cursorLeft = document.getElementById('cursorLeft');
+    var cursorRight = document.getElementById('cursorRight');
+    var backSpaceList = ['arcsin', 'arccos', 'arctan', 'arcsinh', 'arccosh', 'arctanh', 'sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'ln', 'log', 'lg', '√', 'det', 'cross', 'dot', 'inv', 'e^'];
+    var shapes = document.getElementsByClassName('shape');
+    var createMatrix = document.getElementById('createMatrix');
+    var exponential = document.getElementById('exponential');
+    var fraction = document.getElementById('fraction');
+    var eExponential = document.getElementById('eExponential');
+
+    var copyString = "";
+    var leftInput = "", rightInput = "";
+    var calFormula = math.parser();
+
+
+    function getReplaceInput() {
+        let t = input.value
+        return t.replace(/𝜋/g, 'pi').replace(/√/g, 'sqrt').replace(/÷/g, '/').replace(/×/g, '*').replace(/log/g, 'log10').replace(/ln/g, 'log').replace(/lg/g, 'log2').replace(/arcsin/g, 'asin').replace(/arccos/g, 'acos').replace(/arctan/g, 'atan').replace(/arcsinh/g, 'asinh').replace(/arccosh/g, 'acosh').replace(/arctanh/g, 'atanh').replace(/°/g, 'deg');
+
+    }
+
+    function inputFocus() {
+        input.focus();
+        input.setSelectionRange(leftInput.length, leftInput.length);
+    }
+
+    function calculateResult() {
+        try {
+            console.log("input.value: " + input.value);
+            let replaceInput = getReplaceInput();
+            let tmp = calFormula.eval(replaceInput).toString().replace('deg', '°');
+            if (tmp.split(" ")[0] != "function")
+                result.value = tmp;
         }
-        
-    })
+        catch (e) {
+            console.log('계산할 수 없는 수식이므로 작동하지 않는다.');
+        }
+        finally {
+            if (input.value == "")
+                result.value = "";
+        }
+    }
+    for (let i = 0; i < numbers.length; i++) {
+        numbers[i].addEventListener('click', function () {
+            leftInput += numbers[i].value;
+            input.value = leftInput + rightInput;
+            calculateResult();
+            inputFocus();
+            console.log("numberButtons[" + i + "] (" + numbers[i].value + ") : input.value = " + input.value);
+        });
+    }
 
+    for (let i = 0; i < normalOperations.length; i++) {
+        normalOperations[i].addEventListener('click', function () {
+            leftInput += normalOperations[i].value;
+            input.value = leftInput + rightInput;
+            calculateResult();
+            inputFocus();
+            console.log("normalOperations[" + i + "] '" + normalOperations[i].value + "' : input.value = " + input.value);
+        });
+    }
 
+    for (let i = 0; i < specialOperations.length; i++) {
+        specialOperations[i].addEventListener('click', function () {
+            leftInput += specialOperations[i].value + "(";
+            rightInput = ")" + rightInput;
+            input.value = leftInput + rightInput;
+            calculateResult();
+            inputFocus();
+            console.log("specialOperations[" + i + "] '" + specialOperations[i].value + "' : input.value = " + input.value);
+        });
+    }
+
+    enter.addEventListener('click', function () {
+        try {
+            let replaceInput = getReplaceInput();
+            let answer = calFormula.eval(replaceInput).toString();
+            answer = answer.replace('deg', '°');
+            let check = true;
+
+            if (answer.split(' ')[0] == 'function') {
+                console.log(answer);
+                answer = answer.split(' ')[0];
+                historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.value = '" + answer + "'\">" + input.value + "</button></tr>";
+                result.value = rightInput = leftInput = "";
+
+            }
+            else {
+                try {
+                    let value = "";
+                    if (input.value.match('=') &&
+                        (!input.value.match('!=') && !input.value.match('>=') && !input.value.match('<='))) {
+                        value = input.value.replace('=', ' = ');
+                    }
+                    else {
+                        value = input.value + " &#61; " + answer.toString();
+                    }
+
+                    historyList.innerHTML += "<tr><button type='button' class='btn btn-outline-secondary history_list' data-dismiss='modal' onclick=\"leftInput='" + input.value + "'; rightInput=''; input.value='" + leftInput + rightInput + "'; result.value = '" + answer + "'\">" + value + "</button></tr>";
+                }
+                catch (ex) {
+                    console.log("enter Error : " + ex.message);
+                    console.log(historyList.innerHTML);
+                    result.value = "history saved Error";
+                    check = false;
+                }
+            }
+            if (check)
+                result.value = answer;
+            inputFocus();
+            console.log("enter : result.value = " + result.value);
+        }
+        catch (ex) {
+            console.log("enter Error : " + ex.message);
+            console.log("input.value = " + input.value);
+            result.value = "This can't be calculated.";
+        }
+    });
+
+    clear.addEventListener('click', function () {
+        input.value = result.value = leftInput = rightInput = "";
+        inputFocus();
+        console.log("clear : input.value = " + input.value);
+    });
+
+    copyApaste.addEventListener('click', function () {
+        let txt = "";
+        if (window.getSelection) {
+            txt = window.getSelection();
+            console.log("window.getSelection : txt = " + txt);
+
+            if (txt.toString() == "" || txt.toString() == copyString) {
+                leftInput += copyString;
+                input.value = leftInput + rightInput;
+
+                calculateResult();
+                inputFocus();
+                console.log("paste : input.value = " + input.value);
+            }
+            else {
+                copyString = txt.toString();
+
+                inputFocus();
+                console.log("copy : copyString = " + copyString);
+            }
+        }
+        else {
+            console.log("copyApaste Error wrong detection window.getSelection == false");
+        }
+    });
+
+    backSpace.addEventListener('click', function () {
+        let check = true;
+        for (let i = 0; i < backSpaceList.length; i++) {
+            let checkMatch = leftInput.match(backSpaceList[i]);
+            if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 1).toString()) {
+                if (leftInput.substr(leftInput.length - 1, 1) == "(") {
+                    console.log('match : ' + backSpaceList[i]);
+                    leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 1);
+                    if (rightInput.substr(0, 1) == ")")
+                        rightInput = rightInput.substr(1, rightInput.length - 1);
+
+                    check = false;
+                    break;
+                }
+            }
+            else if (checkMatch != null && checkMatch.index == (leftInput.length - backSpaceList[i].length - 2).toString()) {
+                if (leftInput.substr(leftInput.length - 2, 2) == "()") {
+                    console.log('match : ' + backSpaceList[i]);
+                    leftInput = leftInput.substr(0, leftInput.length - backSpaceList[i].length - 2);
+
+                    check = false;
+                    break;
+                }
+            }
+        }
+        if (check) {
+            let piCheck = leftInput.match('𝜋');
+            if (piCheck != null && piCheck.index == (leftInput.length - 2).toString())
+                leftInput = leftInput.substr(0, leftInput.length - 2);
+            else
+                leftInput = leftInput.substr(0, leftInput.length - 1);
+        }
+        input.value = leftInput + rightInput;
+
+        calculateResult();
+        inputFocus();
+        console.log("backSpace input.value : " + input.value);
+    });
+    cursorLeft.addEventListener('click', function () {
+        rightInput = leftInput.substr(leftInput.length - 1, 1) + rightInput;
+        leftInput = leftInput.substr(0, leftInput.length - 1);
+        input.value = leftInput + rightInput;
+        inputFocus();
+    });
+    cursorRight.addEventListener('click', function () {
+        leftInput = leftInput + rightInput.substr(0, 1);
+        rightInput = rightInput.substr(1, rightInput.length - 1);
+        input.value = leftInput + rightInput;
+        inputFocus();
+    });
+
+    createMatrix.addEventListener('click', function () {
+        let n = [];
+        let matrix = "";
+        for (let i = 0; i < 2; i++) {
+            n[i] = shapes[i].options[shapes[i].selectedIndex].value;
+        }
+
+        let mat = "[";
+        for (let i = 0; i < n[1] - 1; i++)
+            mat += ",";
+        mat += "]";
+
+        if (n[0] == 1) {
+            leftInput += mat.substr(0, 1);
+            rightInput = mat.substr(1, mat.length - 1) + rightInput;
+            input.value = leftInput + rightInput;
+            inputFocus();
+        }
+        else {
+            matrix += "[";
+            for (let i = 0; i < n[0]; i++) {
+                if (i > 0)
+                    matrix += ",";
+                matrix += mat;
+            }
+            matrix += "]";
+
+            leftInput += matrix.substr(0, 2);
+            rightInput = matrix.substr(2, matrix.length - 2) + rightInput;
+            input.value = leftInput + rightInput;
+            inputFocus();
+        }
+    });
+
+    exponential.addEventListener('click', function () {
+        leftInput += "(";
+        rightInput = ")^2" + rightInput;
+        input.value = leftInput + rightInput;
+
+        inputFocus();
+    });
+
+    fraction.addEventListener('click', function () {
+        leftInput += "1/(";
+        rightInput = ")" + rightInput;
+        input.value = leftInput + rightInput;
+
+        inputFocus();
+    });
+
+    eExponential.addEventListener('click', function () {
+        leftInput += "e^(";
+        rightInput = ")" + rightInput;
+
+        input.value = leftInput + rightInput;
+
+        inputFocus();
+    });
+
+    input.addEventListener('click', function () {
+        let a = input.selectionStart;
+        if (a == input.selectionEnd) {
+            input.value = leftInput + rightInput;
+
+            leftInput = input.value.substr(0, a);
+            rightInput = input.value.substr(a);
+        }
+    });
+
+    console.log(window.innerWidth, window.innerHeight);
 </script>
-
 </html>
